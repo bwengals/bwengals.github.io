@@ -1,0 +1,20 @@
+name: Bill Engels
+title: The left side of the bell curve
+baseurl: ""
+
+date_format: "%Y-%m-%d"
+
+# Build settings
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    # Use existing pygments syntax highlighting css
+    css_class: 'highlight'
+
+permalink: pretty
+
+# Third-party services
+# just leave someone empty to disable it
+google_analytics:
+disqus_shortname:
