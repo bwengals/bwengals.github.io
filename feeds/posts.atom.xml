@@ -1,38 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <title>The left side of the bell curve</title>
-        <link rel="stylesheet" href="http://bwengals.github.io/theme/css/main.css" />
-        <link href="http://bwengals.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="The left side of the bell curve Atom Feed" />
-
-        <!--[if IE]>
-            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-</head>
-
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="http://bwengals.github.io/">The left side of the bell curve </a></h1>
-                <nav><ul>
-                    <li><a href="http://bwengals.github.io/category/posts.html">posts</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://bwengals.github.io/gp-speedups.html">Structure exploiting methods to speed up gaussian processes</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2076-05-28T20:52:00-08:00">
-                Published: Thu 28 May 2076
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://bwengals.github.io/author/me.html">me</a>
-        </address>
-<p>In <a href="http://bwengals.github.io/category/posts.html">posts</a>.</p>
-<p>tags: <a href="http://bwengals.github.io/tag/gaussian-processes.html">gaussian-processes</a> </p>
-</footer><!-- /.post-info --><style type="text/css">/*!
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>The left side of the bell curve - posts</title><link href="http://bwengals.github.io/" rel="alternate"></link><link href="http://bwengals.github.io/feeds/posts.atom.xml" rel="self"></link><id>http://bwengals.github.io/</id><updated>2076-05-28T20:52:00-08:00</updated><entry><title>Structure exploiting methods to speed up gaussian processes</title><link href="http://bwengals.github.io/gp-speedups.html" rel="alternate"></link><published>2076-05-28T20:52:00-08:00</published><updated>2076-05-28T20:52:00-08:00</updated><author><name>me</name></author><id>tag:bwengals.github.io,2076-05-28:/gp-speedups.html</id><summary type="html">---
+layout: post
+title:  Structure Exploiting Methods to Accelerate GP computations
+date:   2017-05-27 10:30:00
+---
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;This post is an outline of potential strategies to speed up GPs that could be implemented in PyMC3.  Since many of these changes are at the linear algebra level, they may require new Theano Ops.&lt;/p&gt;
+&lt;p&gt;Gaussian Processes in general have a computational complexity of $\mathcal{O}(n^3)$.  Show math and basic algorithm to compute likelihood and prediction.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -259,7 +237,7 @@ div.unrecognized_cell .inner_cell a:hover {
   text-decoration: none;
 }
 @media (max-width: 540px) {
-  div.unrecognized_cell > div.prompt {
+  div.unrecognized_cell &gt; div.prompt {
     display: none;
   }
 }
@@ -312,19 +290,19 @@ div.input_prompt {
   color: #303F9F;
   border-top: 1px solid transparent;
 }
-div.input_area > div.highlight {
+div.input_area &gt; div.highlight {
   margin: 0.4em;
   border: none;
   padding: 0px;
   background-color: transparent;
 }
-div.input_area > div.highlight > pre {
+div.input_area &gt; div.highlight &gt; pre {
   margin: 0px;
   border: none;
   padding: 0px;
   background-color: transparent;
 }
-/* The following gets added to the <head> if it is detected that the user has a
+/* The following gets added to the &lt;head&gt; if it is detected that the user has a
  * monospace font with inconsistent normal/bold/italic height.  See
  * notebookmain.js.  Such fonts will have keywords vertically offset with
  * respect to the rest of the text.  The user should select a better font.
@@ -370,7 +348,7 @@ div.input_area > div.highlight > pre {
 }
 /*
 
-Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Original style from softwaremaniacs.org (c) Ivan Sagalaev &lt;Maniac@SoftwareManiacs.Org&gt;
 Adapted from GitHub theme
 
 */
@@ -832,7 +810,7 @@ div.text_cell {
   align-items: stretch;
 }
 @media (max-width: 540px) {
-  div.text_cell > div.prompt {
+  div.text_cell &gt; div.prompt {
     display: none;
   }
 }
@@ -897,8 +875,8 @@ h6:hover .anchor-link {
   font-size: 100%;
   font-style: italic;
 }
-</style>
-<style type="text/css">.highlight .hll { background-color: #ffffcc }
+&lt;/style&gt;
+&lt;style type="text/css"&gt;.highlight .hll { background-color: #ffffcc }
 .highlight  { background: #f8f8f8; }
 .highlight .c { color: #408080; font-style: italic } /* Comment */
 .highlight .err { border: 1px solid #FF0000 } /* Error */
@@ -962,8 +940,8 @@ h6:hover .anchor-link {
 .highlight .vc { color: #19177C } /* Name.Variable.Class */
 .highlight .vg { color: #19177C } /* Name.Variable.Global */
 .highlight .vi { color: #19177C } /* Name.Variable.Instance */
-.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
-<style type="text/css">
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */&lt;/style&gt;
+&lt;style type="text/css"&gt;
 /* Temporary definitions which will become obsolete with Notebook release 5.0 */
 .ansi-black-fg { color: #3E424D; }
 .ansi-black-bg { background-color: #3E424D; }
@@ -999,84 +977,84 @@ h6:hover .anchor-link {
 .ansi-white-intense-bg { background-color: #A1A6B2; }
 
 .ansi-bold { font-weight: bold; }
-</style>---
+&lt;/style&gt;---
 layout: post
 title:  Structure Exploiting Methods to Accelerate GP computations
 date:   2017-05-27 10:30:00
 ---
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This post is an outline of potential strategies to speed up GPs that could be implemented in PyMC3.  Since many of these changes are at the linear algebra level, they may require new Theano Ops.</p>
-<p>Gaussian Processes in general have a computational complexity of $\mathcal{O}(n^3)$.  Show math and basic algorithm to compute likelihood and prediction.</p>
-<p>The complexity of the Cholesky Decomposition is $\mathcal{O}(\frac{1}{3} n^3)$.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [40]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># add pymc3 master to path</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"/home/bill/pymc3/"</span><span class="p">)</span>
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;This post is an outline of potential strategies to speed up GPs that could be implemented in PyMC3.  Since many of these changes are at the linear algebra level, they may require new Theano Ops.&lt;/p&gt;
+&lt;p&gt;Gaussian Processes in general have a computational complexity of $\mathcal{O}(n^3)$.  Show math and basic algorithm to compute likelihood and prediction.&lt;/p&gt;
+&lt;p&gt;The complexity of the Cholesky Decomposition is $\mathcal{O}(\frac{1}{3} n^3)$.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [40]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# add pymc3 master to path&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"/home/bill/pymc3/"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-<span class="c1"># do imports</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pymc3</span> <span class="k">as</span> <span class="nn">pm</span>
-<span class="kn">import</span> <span class="nn">theano</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>These set of methods exploit structure in the covariance matrix (or kernel) to speed up the solve operation.  Depending on the problem, these methods can be combined.</p>
-<h2 id="Toeplitz-structure">Toeplitz structure<a class="anchor-link" href="#Toeplitz-structure">¶</a></h2><p>Each diagonal of a Toeplitz matrix is constant.  For instance, the following matrix is Toeplitz:</p>
+&lt;span class="c1"&gt;# do imports&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pymc3&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pm&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;theano&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;These set of methods exploit structure in the covariance matrix (or kernel) to speed up the solve operation.  Depending on the problem, these methods can be combined.&lt;/p&gt;
+&lt;h2 id="Toeplitz-structure"&gt;Toeplitz structure&lt;a class="anchor-link" href="#Toeplitz-structure"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Each diagonal of a Toeplitz matrix is constant.  For instance, the following matrix is Toeplitz:&lt;/p&gt;
 $$
 A = \begin{bmatrix}
-a & b & c & d & e \\
-f & a & b & c & d \\
-g & f & a & b & c \\
-h & g & f & a & b \\
-i & h & g & f & a 
+a &amp; b &amp; c &amp; d &amp; e \\
+f &amp; a &amp; b &amp; c &amp; d \\
+g &amp; f &amp; a &amp; b &amp; c \\
+h &amp; g &amp; f &amp; a &amp; b \\
+i &amp; h &amp; g &amp; f &amp; a 
 \end{bmatrix}
-$$<p>If a stationary covariance matrix is used, such as the Matern and Exponentiated Quadratic, and the inputs <code>X</code> are evenly spaced and one dimensional, then the resulting covariance matrix has Toeplitz structure.  An example of a covariance matrix with Toeplitz structure is shown below.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [42]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">50</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
-<span class="c1"># define and evaluate covariance function</span>
-<span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Matern32</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)(</span><span class="n">X</span><span class="p">))()</span>
+$$&lt;p&gt;If a stationary covariance matrix is used, such as the Matern and Exponentiated Quadratic, and the inputs &lt;code&gt;X&lt;/code&gt; are evenly spaced and one dimensional, then the resulting covariance matrix has Toeplitz structure.  An example of a covariance matrix with Toeplitz structure is shown below.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [42]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;)[:,&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="c1"&gt;# define and evaluate covariance function&lt;/span&gt;
+&lt;span class="n"&gt;K&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;theano&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="p"&gt;([],&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cov&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Matern32&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.3&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;))()&lt;/span&gt;
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">m</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">,</span>
-              <span class="n">interpolation</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span>
-              <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X</span><span class="p">)));</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHWCAYAAACv91olAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+&lt;span class="n"&gt;ax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;111&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;K&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cmap&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"inferno"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+              &lt;span class="n"&gt;interpolation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'none'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+              &lt;span class="n"&gt;extent&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;)));&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_png output_subarea "&gt;
+&lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHWCAYAAACv91olAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAH5JJREFUeJzt3V+MbdddH/Dv8o0dCAkEJYCoHYRBhmCpRAITUBW1AdRi
 58VCykMSRNQIZFlNEI+J+kAf8lKEKiFEwLIiK+KlfigRmMqQIlX8kUKoQco/J3J066iJTaQQk2DH
 sX3v3Fl9mGmZXOxZy3fW7N/M8ecjXenOnH33WbPPnvPdZ+78vqf13gMAbOu66gUAwEuRAAaAAgIY
@@ -1220,63 +1198,63 @@ WntFkp9M8tmN13kezRzbL+TgJwtprX1PDt5I4NFNV7mbrinHTvUVcO99r7X2niQfycFv6N3Xe3+4
 tXb34e2qLK/R5LH9tSSvSfI7h6/U9rpC9qHJY8s1mDm2vffPttb+JMknk+wn+WDv/Vy8c1qlyfP2
 /Uk+1Fr7VA5+Y/e9vXfvQDVwWpXMmrAAoIAmLAAoIIABoIAABoACAhgACghgACgggAGggAAGgAIC
 GAAK/F90ZWL42+bVkAAAAABJRU5ErkJggg==
-">
-</img></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To include in PyMC3 this would require a new Op and gradient to be implemented (eventually, preferably) in Theano. This may also benefit some time series methods.</p>
-<h5 id="References">References<a class="anchor-link" href="#References">¶</a></h5><ul>
-<li><a href="https://arxiv.org/abs/1503.01057">KISS-GP</a></li>
-<li><a href="http://icml2008.cs.helsinki.fi/papers/151.pdf">Cunningham et al.</a></li>
-<li><a href="http://www.math.niu.edu/~ammar/cortona/node3.html">Fast Cholesky Factorization</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Kronecker-Structure">Kronecker Structure<a class="anchor-link" href="#Kronecker-Structure">¶</a></h2><p>It may be possible to exploit Kronecker structure if the number of $X$ dimensions is greater than 1.</p>
-<p>The product of two covariance functions is also a covariance function, even if the inputs are over different spaces.  For example, in the two dimensional case, $k = k_1(x_1, x_1') k_2(x_2 , x_2')$ is a valid covariance function.  If the number of $x_1$ data points is $n_1$, and the number of $x_2$ data points is $n_2$, then the dimension of the $k$ <strong>matrix</strong> will be $n_1 n_2 \times n_1 n_2$ (large!).</p>
-<p>Fortunately, the matrix $K$ can be written in terms of a Kronecker product, $K = K_1 \otimes K_2$, and the inverse of a Kronecker product is equal to the Kronecker product of the inverses, $K^{-1} = K_1^{-1} \otimes K_2^{-1}$.</p>
-<p>For example, in a two dimensional scenario, this reduces complexity from $\mathcal{O}((n_1 n_2)^3)$ to the much faster $\mathcal{O}(n_1^3) + \mathcal{O}(n_2^3)$.</p>
-<p>The full matrix $K$ has an apparent blocked structure, as shown below.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [45]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
-<span class="n">K1</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Matern32</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)(</span><span class="n">x1</span><span class="p">))()</span>
+"&gt;
+&lt;/img&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;To include in PyMC3 this would require a new Op and gradient to be implemented (eventually, preferably) in Theano. This may also benefit some time series methods.&lt;/p&gt;
+&lt;h5 id="References"&gt;References&lt;a class="anchor-link" href="#References"&gt;¶&lt;/a&gt;&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://arxiv.org/abs/1503.01057"&gt;KISS-GP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://icml2008.cs.helsinki.fi/papers/151.pdf"&gt;Cunningham et al.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.math.niu.edu/~ammar/cortona/node3.html"&gt;Fast Cholesky Factorization&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;h2 id="Kronecker-Structure"&gt;Kronecker Structure&lt;a class="anchor-link" href="#Kronecker-Structure"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;It may be possible to exploit Kronecker structure if the number of $X$ dimensions is greater than 1.&lt;/p&gt;
+&lt;p&gt;The product of two covariance functions is also a covariance function, even if the inputs are over different spaces.  For example, in the two dimensional case, $k = k_1(x_1, x_1') k_2(x_2 , x_2')$ is a valid covariance function.  If the number of $x_1$ data points is $n_1$, and the number of $x_2$ data points is $n_2$, then the dimension of the $k$ &lt;strong&gt;matrix&lt;/strong&gt; will be $n_1 n_2 \times n_1 n_2$ (large!).&lt;/p&gt;
+&lt;p&gt;Fortunately, the matrix $K$ can be written in terms of a Kronecker product, $K = K_1 \otimes K_2$, and the inverse of a Kronecker product is equal to the Kronecker product of the inverses, $K^{-1} = K_1^{-1} \otimes K_2^{-1}$.&lt;/p&gt;
+&lt;p&gt;For example, in a two dimensional scenario, this reduces complexity from $\mathcal{O}((n_1 n_2)^3)$ to the much faster $\mathcal{O}(n_1^3) + \mathcal{O}(n_2^3)$.&lt;/p&gt;
+&lt;p&gt;The full matrix $K$ has an apparent blocked structure, as shown below.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [45]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)[:,&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;K1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;theano&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="p"&gt;([],&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cov&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Matern32&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.3&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="n"&gt;x1&lt;/span&gt;&lt;span class="p"&gt;))()&lt;/span&gt;
 
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
-<span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">K1</span><span class="p">)</span>
+&lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
+&lt;span class="n"&gt;K&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kron&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;K1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">m</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">,</span>
-              <span class="n">interpolation</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeIAAAHVCAYAAAAtlvi2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+&lt;span class="n"&gt;ax&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;111&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ax&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;K&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cmap&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"inferno"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+              &lt;span class="n"&gt;interpolation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'none'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_png output_subarea "&gt;
+&lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeIAAAHVCAYAAAAtlvi2AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAHg1JREFUeJzt3X+M3Hd95/HnO16HA7Nc1vURQmzOoESREgQusXKYo1U4
 KIotRNqqahNVB7RILhVURTpU+Q4dx5/pVfQkGkIuPSLgjgtc1YZGVwMNqKcEKaHEruPEkBDHSi52
 EjuJ4x+JfVnP7vv+2Em7bGbj9c73k7dn8nxIq535zmde8/n+GL/2OzuejcxEkiTVOKd6ApIkvZpZ
@@ -1413,112 +1391,112 @@ zktcr/cy99LfbmBX/2vLgnX7FLCHuXc53g28p3reS1ivt/Xne29/7uO0z1YxV6z/fN6ykdxfzP0w
 8QRwirnfGX4c+AXgB8BDwPeB1f2xbwa2z7vvS56TZ8vXIuu1l7nfkb74PLtx4XotdtyeTV+LrNt/
 7z+HdjNXrheMwz7rL//qi8+teWNHap8t5cuPuJQkqdAovDQtSdLYsoglSSpkEUuSVMgiliSpkEUs
 SVIhi1iSpEIWsSRJhf4/R6xxe+w18AQAAAAASUVORK5CYII=
-">
-</img></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$K = K_1 \otimes K_2$ has no diagonal noise term.  If we add a diagonal noise term, $K' = K_1 \otimes K_2 + \sigma^2 I$, then the <code>eigh</code> routine can be used instead of the Cholesky to decompose individual matrices instead of the Cholesky, and the speedup is still obtained.</p>
-<p>I think an implementation in PyMC3 would be best done within the <code>GP</code> class.  Perhaps if the <code>cov_func</code> argument was given a list of covariance matrices and a list of inputs, the <code>GP</code> class would be able to sort it out.  For instance, something like</p>
-<pre><code>gp = pm.gp.GP('gp', cov_func=[k1, k2, k3], inputs=[x1, x2, x3])
+"&gt;
+&lt;/img&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;$K = K_1 \otimes K_2$ has no diagonal noise term.  If we add a diagonal noise term, $K' = K_1 \otimes K_2 + \sigma^2 I$, then the &lt;code&gt;eigh&lt;/code&gt; routine can be used instead of the Cholesky to decompose individual matrices instead of the Cholesky, and the speedup is still obtained.&lt;/p&gt;
+&lt;p&gt;I think an implementation in PyMC3 would be best done within the &lt;code&gt;GP&lt;/code&gt; class.  Perhaps if the &lt;code&gt;cov_func&lt;/code&gt; argument was given a list of covariance matrices and a list of inputs, the &lt;code&gt;GP&lt;/code&gt; class would be able to sort it out.  For instance, something like&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gp = pm.gp.GP('gp', cov_func=[k1, k2, k3], inputs=[x1, x2, x3])
 
-</code></pre>
-<p>might work.</p>
-<h5 id="References">References<a class="anchor-link" href="#References">¶</a></h5><ul>
-<li><a href="https://pdfs.semanticscholar.org/e08f/8db209278eabd13a6b9966e14d10c924b704.pdf">Saatchi Thesis</a></li>
-<li>KISS-GP</li>
-<li><a href="http://sethrf.com/files/fast-hierarchical-GPs.pdf">Fast Hierarchical GPs</a></li>
-<li><a href="https://papers.nips.cc/paper/4281-efficient-inference-in-matrix-variate-gaussian-models-with-iid-observation-noise">Efficient Infernce in Matrix-variate ...</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="SKI-(Structured-Kernel-Interpolation)">SKI (Structured Kernel Interpolation)<a class="anchor-link" href="#SKI-(Structured-Kernel-Interpolation)">¶</a></h2><p>is described in the KISS-GP paper.  This method is a generalization of inducing point methods, such as SoR and FITC.  This method doesn't exploit matrix structure directly itself, but gridded inducing points can be used to produce approximate covariance matrices with Toeplitz and/or Kronecker structure.  The idea is to approximate the true covariance matrix with an interpolated covariance matrix.</p>
-<p>First a grid of $m$ inducing points $U$ over the domain of $X$, which has $n$ data points. The kernel matrix computed at the inducing points is denoted $K_{U,U}$.  The true covariance matrix $K_{X,X}$ can be approximated as
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;might work.&lt;/p&gt;
+&lt;h5 id="References"&gt;References&lt;a class="anchor-link" href="#References"&gt;¶&lt;/a&gt;&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://pdfs.semanticscholar.org/e08f/8db209278eabd13a6b9966e14d10c924b704.pdf"&gt;Saatchi Thesis&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;KISS-GP&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://sethrf.com/files/fast-hierarchical-GPs.pdf"&gt;Fast Hierarchical GPs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://papers.nips.cc/paper/4281-efficient-inference-in-matrix-variate-gaussian-models-with-iid-observation-noise"&gt;Efficient Infernce in Matrix-variate ...&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;h2 id="SKI-(Structured-Kernel-Interpolation)"&gt;SKI (Structured Kernel Interpolation)&lt;a class="anchor-link" href="#SKI-(Structured-Kernel-Interpolation)"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;is described in the KISS-GP paper.  This method is a generalization of inducing point methods, such as SoR and FITC.  This method doesn't exploit matrix structure directly itself, but gridded inducing points can be used to produce approximate covariance matrices with Toeplitz and/or Kronecker structure.  The idea is to approximate the true covariance matrix with an interpolated covariance matrix.&lt;/p&gt;
+&lt;p&gt;First a grid of $m$ inducing points $U$ over the domain of $X$, which has $n$ data points. The kernel matrix computed at the inducing points is denoted $K_{U,U}$.  The true covariance matrix $K_{X,X}$ can be approximated as
 $$
 K_{X,X} \approx W K_{U,U} W^T
 $$
-where $W$ is a matrix of interpolation weights.  Depending on the interpolation scheme used, $W$ can be very sparse.  For example, if $W$ represents local cubic interpolation, each row of $W$ will have 4 non-zero entries.  It isn't strictly necessary for the inducing points to be regularly spaced or on a multidimensional grid.  However, placing them on a grid enables special matrix inversion methods for Kronecker and Toeplitz structured matrices to be used.  The complexity of SKI depends on the number of inducing points used and how they are structured.</p>
-<p>The authors refer to SKI+Toeplitz+Kronecker as KISS-GP. It is implemented in the GPML version 4.0 MATLAB package.</p>
-<ul>
-<li><a href="https://arxiv.org/abs/1503.01057">KISS-GP</a></li>
-<li><a href="http://www.gaussianprocess.org/gpml/code/matlab/doc/">GPML V4.0</a></li>
-<li><a href="https://arxiv.org/abs/1511.01870">Wilson et al. 2015</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-HODLR-solver">The HODLR solver<a class="anchor-link" href="#The-HODLR-solver">¶</a></h2><p>Many common covariance functions produce hierarchical off-diagonal low-rank (HODLR) covariance matrices, pictured below.  The HODLR solver can be applied to speed up inversion and determinant computation to $\mathcal{O}(n log{}^2 n)$ time.  The algorithm can be applied in a black-box fashion, and works best on lower dimensional problems where $d < 3$.  Periodic covariances, for instance, are not HODLR.</p>
-<p>A low rank matrix is one with small eigenvalues that can be approximated as
+where $W$ is a matrix of interpolation weights.  Depending on the interpolation scheme used, $W$ can be very sparse.  For example, if $W$ represents local cubic interpolation, each row of $W$ will have 4 non-zero entries.  It isn't strictly necessary for the inducing points to be regularly spaced or on a multidimensional grid.  However, placing them on a grid enables special matrix inversion methods for Kronecker and Toeplitz structured matrices to be used.  The complexity of SKI depends on the number of inducing points used and how they are structured.&lt;/p&gt;
+&lt;p&gt;The authors refer to SKI+Toeplitz+Kronecker as KISS-GP. It is implemented in the GPML version 4.0 MATLAB package.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://arxiv.org/abs/1503.01057"&gt;KISS-GP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.gaussianprocess.org/gpml/code/matlab/doc/"&gt;GPML V4.0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://arxiv.org/abs/1511.01870"&gt;Wilson et al. 2015&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;h2 id="The-HODLR-solver"&gt;The HODLR solver&lt;a class="anchor-link" href="#The-HODLR-solver"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Many common covariance functions produce hierarchical off-diagonal low-rank (HODLR) covariance matrices, pictured below.  The HODLR solver can be applied to speed up inversion and determinant computation to $\mathcal{O}(n log{}^2 n)$ time.  The algorithm can be applied in a black-box fashion, and works best on lower dimensional problems where $d &lt; 3$.  Periodic covariances, for instance, are not HODLR.&lt;/p&gt;
+&lt;p&gt;A low rank matrix is one with small eigenvalues that can be approximated as
 $$
 K \approx Q_{n \times p} D_{p \times p} Q^T_{p \times n}
 $$
-with $p < n$.</p>
-<p><img alt="caption" src="hodlr.jpg" /></p>
-<p>The HODLR solver uses fast low rank factorizations of off diagonal blocks, and usual full rank solvers for diagonal blocks.</p>
-<p>Below shows that the <code>Matern32</code> covariance is HODLR.  The GP library George contains bindings to the HODLR solver.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [46]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
-<span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Matern32</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)(</span><span class="n">x</span><span class="p">))()</span>
-<span class="n">tol</span> <span class="o">=</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span>
+with $p &lt; n$.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="caption" src="hodlr.jpg" /&gt;&lt;/p&gt;
+&lt;p&gt;The HODLR solver uses fast low rank factorizations of off diagonal blocks, and usual full rank solvers for diagonal blocks.&lt;/p&gt;
+&lt;p&gt;Below shows that the &lt;code&gt;Matern32&lt;/code&gt; covariance is HODLR.  The GP library George contains bindings to the HODLR solver.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [46]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)[:,&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;K&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;theano&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="p"&gt;([],&lt;/span&gt; &lt;span class="n"&gt;pm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cov&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Matern32&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.4&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))()&lt;/span&gt;
+&lt;span class="n"&gt;tol&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
-<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
-<span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">,</span>
-           <span class="n">interpolation</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">[:</span><span class="mi">50</span><span class="p">,:</span><span class="mi">50</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">,</span>
-           <span class="n">interpolation</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">[</span><span class="mi">50</span><span class="p">:,:</span><span class="mi">50</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">,</span>
-           <span class="n">interpolation</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"K"</span><span class="p">);</span> <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"upper left block"</span><span class="p">);</span> <span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"lower left block"</span><span class="p">)</span>
+&lt;span class="n"&gt;fig&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;ax1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;131&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ax2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;132&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ax3&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;133&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ax1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;K&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cmap&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"inferno"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+           &lt;span class="n"&gt;interpolation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'none'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ax2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;K&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;,:&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;cmap&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"inferno"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+           &lt;span class="n"&gt;interpolation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'none'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ax3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;K&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;:,:&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;cmap&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"inferno"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+           &lt;span class="n"&gt;interpolation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'none'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ax1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"K"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="n"&gt;ax2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"upper left block"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="n"&gt;ax3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"lower left block"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Rank of K:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Rank of upper left block:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">K</span><span class="p">[:</span><span class="mi">50</span><span class="p">,:</span><span class="mi">50</span><span class="p">],</span> <span class="n">tol</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Rank of lower left block:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">K</span><span class="p">[</span><span class="mi">50</span><span class="p">:,:</span><span class="mi">50</span><span class="p">],</span> <span class="n">tol</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area">
-<div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Rank of K: 100
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Rank of K:"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;matrix_rank&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;K&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tol&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;tol&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Rank of upper left block:"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;matrix_rank&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;K&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;,:&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;tol&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Rank of lower left block:"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linalg&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;matrix_rank&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;K&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;:,:&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;tol&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;Rank of K: 100
 Rank of upper left block: 50
 Rank of lower left block: 2
-</pre>
-</div>
-</div>
-<div class="output_area">
-<div class="prompt"></div>
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsMAAAD0CAYAAAB+bCt+AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="output_area"&gt;
+&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_png output_subarea "&gt;
+&lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsMAAAD0CAYAAAB+bCt+AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
 AAALEgAACxIB0t1+/AAAIABJREFUeJzt3Xu4JVV55/Hve5puurkJBAZbQNtETKaTJ2LSYzDkQkQz
 BI34OAmDEYcY85Dk0QkmJhHMxZjLSJ4YIzPmMj1ewNGgBo04xkkkRHDMxQSUMSg6aAS5NDcFge7T
 p8/Z9c4fVfvsqtp712Vfqtbe9fs8z3nOWbWqdq19WXuves+71zJ3R0RERESki1baboCIiIiISFs0
@@ -1749,53 +1727,53 @@ QYJ6EG0j/nbrTclj9yHguFDalrTvDcRvHLcC/xM4PKT2LdJPSP0WuJo4D3yd+D8UrwjleQ39/QT4
 TuAzSftuBX4j2R5E+1LtDO79bpF+QuqvSXvUZydrm/prwz9agU5EREREOqvzX6ATERERke7SYFhE
 REREOkuDYRERERHpLA2GRURERKSzNBgWERERkc7SYFhEREREOkuDYRERERHpLA2GRURERKSz/j+u
 V2+kcR9qNQAAAABJRU5ErkJggg==
-">
-</img></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To include in PyMC3, a HODLR solver Op would need to be added to either PyMC3 or Theano.  I'm not sure how the gradient implementation would work here, depending on the details I could see this potentially being a little tricky.</p>
-<h5 id="References">References<a class="anchor-link" href="#References">¶</a></h5><ul>
-<li><a href="https://arxiv.org/pdf/1403.6015.pdf">HODLR solver paper</a></li>
-<li><a href="https://github.com/sivaramambikasaran/HODLR">HODLR solver code</a></li>
-<li><a href="http://dan.iel.fm/george/current/">George</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Covariance-functions-with-compact-support">Covariance functions with compact support<a class="anchor-link" href="#Covariance-functions-with-compact-support">¶</a></h2><p>If the data being fit doesn't exhibit long-distance correlations, then many elements in the covariance matrix will be near zero.  If the matrix were actually sparse, then linear algebra routines could be applied for computational gains. Simply zeroing out these small values won't in general produce a matrix that is positive definite.</p>
-<p>Some kernels have compact support, and so will yield covariance matrices that are sparse when, for example, the domain of the data is large and the function being fit is high frequency or has a small lengthscale.  Including covariance function(s) with compact support should be pretty straightforward in PyMC3.</p>
-<h5 id="References:">References:<a class="anchor-link" href="#References:">¶</a></h5><ul>
-<li><a href="https://www.amazon.com/Scattered-Approximation-Monographs-Computational-Mathematics/dp/0521843359">Scattered Data Approximation, Wendland (ch 9)</a></li>
-<li><a href="http://www.math.iit.edu/~fass/603_ch4.pdf">book chapter</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+"&gt;
+&lt;/img&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;To include in PyMC3, a HODLR solver Op would need to be added to either PyMC3 or Theano.  I'm not sure how the gradient implementation would work here, depending on the details I could see this potentially being a little tricky.&lt;/p&gt;
+&lt;h5 id="References"&gt;References&lt;a class="anchor-link" href="#References"&gt;¶&lt;/a&gt;&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://arxiv.org/pdf/1403.6015.pdf"&gt;HODLR solver paper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/sivaramambikasaran/HODLR"&gt;HODLR solver code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://dan.iel.fm/george/current/"&gt;George&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;h2 id="Covariance-functions-with-compact-support"&gt;Covariance functions with compact support&lt;a class="anchor-link" href="#Covariance-functions-with-compact-support"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;If the data being fit doesn't exhibit long-distance correlations, then many elements in the covariance matrix will be near zero.  If the matrix were actually sparse, then linear algebra routines could be applied for computational gains. Simply zeroing out these small values won't in general produce a matrix that is positive definite.&lt;/p&gt;
+&lt;p&gt;Some kernels have compact support, and so will yield covariance matrices that are sparse when, for example, the domain of the data is large and the function being fit is high frequency or has a small lengthscale.  Including covariance function(s) with compact support should be pretty straightforward in PyMC3.&lt;/p&gt;
+&lt;h5 id="References:"&gt;References:&lt;a class="anchor-link" href="#References:"&gt;¶&lt;/a&gt;&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.amazon.com/Scattered-Approximation-Monographs-Computational-Mathematics/dp/0521843359"&gt;Scattered Data Approximation, Wendland (ch 9)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.math.iit.edu/~fass/603_ch4.pdf"&gt;book chapter&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var mathjaxscript = document.createElement('script');
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
@@ -1822,37 +1800,5 @@ V2+kcR9qNQAAAABJRU5ErkJggg==
         "}); ";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-</script>
-                </article>
-            </aside><!-- /#featured -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-                            <li><a href="http://bwengals.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
-
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
-
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
-</html>
+&lt;/script&gt;
+</content><category term="gaussian-processes"></category></entry></feed>
