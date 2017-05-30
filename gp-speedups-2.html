@@ -1027,16 +1027,18 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Speeding-up-Computation">Speeding up Computation<a class="anchor-link" href="#Speeding-up-Computation">¶</a></h1><p>The goal of PyMC3 is to be able to flexibly define Bayesian models, so we don't want to restrict users to the case where the GP prior is conjugate to the likelihood.  It should be easy to use non-conjugate likelihoods.  Also, I think any tricks we might employ should be transparent to the user, but optional.  Perhaps each could be turned on by setting a flag.</p>
-<p>The computational complexity of the Cholesky decomposition is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).  For PyMC3, Theano also needs to be able to compute the gradient.</p>
+<p>The goal of PyMC3 is to be able to flexibly define Bayesian models.  So, we don't want to restrict users to the case where the GP prior is conjugate to the likelihood.  It should be easy to use non-conjugate likelihoods.  I think any tricks we might employ should be visible to the user and optional with a smart way of choosing defaults.  Each could be turned on by setting a flag.</p>
+<h1 id="Speeding-up-Computation">Speeding up Computation<a class="anchor-link" href="#Speeding-up-Computation">¶</a></h1><p>The computational complexity of the Cholesky decomposition is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).  For PyMC3, Theano also needs to be able to compute the gradient.</p>
 <p>The three main ways that I've been able to find in the literature of reducing the $\mathcal{O}(n^3)$ complexity from the Cholesky decomposition can be summarized very roughly as:</p>
 <ol>
 <li>Exploit special structure in the matrix $K$ with specialized linear algebra algorithms</li>
 <li>Make $K$ effectively smaller ("inducing point methods")</li>
-<li>Variational methods (not discussed here, I need to read some more!)</li>
+<li>Variational methods (not discussed here, I'm still reading!)</li>
 </ol>
-<h2 id="1.--Exploiting-Matrix-Structure">1.  Exploiting Matrix Structure<a class="anchor-link" href="#1.--Exploiting-Matrix-Structure">¶</a></h2><p>The first set of methods exploits structure in the covariance matrix (or kernel) to speed up the solve operation.  Depending on the problem, these methods can be combined.</p>
-</div>
+<p>This post is about 1.</p>
+<hr>
+<h2 id="Exploiting-Matrix-Structure">Exploiting Matrix Structure<a class="anchor-link" href="#Exploiting-Matrix-Structure">¶</a></h2><p>The first set of methods exploits structure in the covariance matrix (or kernel) to speed up the solve operation.  Depending on the problem, these methods can be combined.</p>
+</hr></div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
@@ -1253,7 +1255,7 @@ GAAK/F90ZWL42+bVkAAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To include in PyMC3 this would require a new Op and gradient to be implemented (eventually, preferably) in Theano. This may also benefit some time series methods.</p>
+<p>To include this in PyMC3 would require a new Op and gradient to be implemented (eventually, preferably) in Theano. This may also benefit some time series methods.</p>
 <h5 id="References">References<a class="anchor-link" href="#References">¶</a></h5><ul>
 <li><a href="https://arxiv.org/abs/1503.01057">KISS-GP</a></li>
 <li><a href="http://icml2008.cs.helsinki.fi/papers/151.pdf">Cunningham et al.</a></li>
@@ -1447,7 +1449,7 @@ SVIhi1iSpEIWsSRJhf4/R6xxe+w18AQAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>$K = K_1 \otimes K_2$ has no diagonal noise term.  If we add a diagonal noise term, $K' = K_1 \otimes K_2 + \sigma^2 I$, then the <code>eigh</code> routine can be used instead of the Cholesky to decompose individual matrices instead of the Cholesky, and the speedup is still obtained.</p>
-<p>I think an implementation in PyMC3 would be best done within the <code>GP</code> class.  Perhaps if the <code>cov_func</code> argument was given a list of covariance matrices and a list of inputs, the <code>GP</code> class would be able to sort it out.  For instance, something like</p>
+<p>I think an implementation in PyMC3 would be best done within the <code>GP</code> class.  If the <code>cov_func</code> argument was given a list of covariance matrices and a list of inputs, the <code>GP</code> class would be able to sort it out.  For instance, something like</p>
 <pre><code>gp = pm.gp.GP('gp', cov_func=[k1, k2, k3], inputs=[x1, x2, x3])
 
 </code></pre>
@@ -1479,7 +1481,7 @@ with $p < n$.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
@@ -1803,48 +1805,9 @@ hBBCiBpoMSWEEEIIUQMtpoQQQgghaqDFlBBCCCFEDbSYEkIIIYSogRZTQgghhBA10GJKCCGEEKIG
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Making-$n$-Smaller">Making $n$ Smaller<a class="anchor-link" href="#Making-$n$-Smaller">¶</a></h2><h3 id="Inducing-Point-Methods">Inducing Point Methods<a class="anchor-link" href="#Inducing-Point-Methods">¶</a></h3><p>The two most popular inducing point approaches are SoR (subset of regressors) and FITC (...).</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="SKI-(Structured-Kernel-Interpolation)">SKI (Structured Kernel Interpolation)<a class="anchor-link" href="#SKI-(Structured-Kernel-Interpolation)">¶</a></h3><p>is described in the KISS-GP paper.  This method is a generalization of inducing point methods, such as SoR and FITC.  This method doesn't exploit matrix structure directly itself, but gridded inducing points can be used to produce approximate covariance matrices with Toeplitz and/or Kronecker structure.  The idea is to approximate the true covariance matrix with an interpolated covariance matrix.</p>
-<p>First a grid of $m$ inducing points $U$ over the domain of $X$, which has $n$ data points. The kernel matrix computed at the inducing points is denoted $K_{U,U}$.  The true covariance matrix $K_{X,X}$ can be approximated as
-$$
-K_{X,X} \approx W K_{U,U} W^T
-$$
-where $W$ is a matrix of interpolation weights.  Depending on the interpolation scheme used, $W$ can be very sparse.  For example, if $W$ represents local cubic interpolation, each row of $W$ will have 4 non-zero entries.  It isn't strictly necessary for the inducing points to be regularly spaced or on a multidimensional grid.  However, placing them on a grid enables special matrix inversion methods for Kronecker and Toeplitz structured matrices to be used.  The complexity of SKI depends on the number of inducing points used and how they are structured.</p>
-<p>The authors refer to SKI+Toeplitz+Kronecker as KISS-GP. It is implemented in the GPML version 4.0 MATLAB package.</p>
-<ul>
-<li><a href="https://arxiv.org/abs/1503.01057">KISS-GP</a></li>
-<li><a href="http://www.gaussianprocess.org/gpml/code/matlab/doc/">GPML V4.0</a></li>
-<li><a href="https://arxiv.org/abs/1511.01870">Wilson et al. 2015</a></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>This was a summary of GP's and how possible speedups work.  Many of them can be mixed and matched in different ways, but all have tradeoffs.  Many require the covariance matrix to have special structure, and so cannot be used in all cases.  Other speedups approximate the gaussian process model, so the solutions are inexact.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-</div>
-</div>
+<hr>
+<h2 id="Next-...">Next ...<a class="anchor-link" href="#Next-...">¶</a></h2><p>There are other approaches out there.  I plan on adding them as I come across them.  The next post is about point number two, inducing point methods.</p>
+</hr></div>
 </div>
 </div>
 

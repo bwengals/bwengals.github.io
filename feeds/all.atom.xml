@@ -5,7 +5,7 @@
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Speeding-up-Computation"&gt;Speeding up Computation&lt;a class="anchor-link" href="#Speeding-up-Computation"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;The goal of PyMC3 is to be able to flexibly define Bayesian models, so we don't want to restrict users to the case where the GP prior is conjugate to the likelihood.  It should be easy to use non-conjugate likelihoods.  Also, I think any tricks we might employ should be transparent to the user, but optional.  Perhaps each could be turned on by setting a flag.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
+&lt;p&gt;The goal of PyMC3 is to be able to flexibly define Bayesian models.  So, we don't want to restrict users to the case where the GP prior is conjugate to the likelihood.  It should be easy to use non-conjugate likelihoods.  I think any tricks we might employ should be visible to the user and optional with a smart way of choosing defaults.  Each could be turned on by setting a flag.&lt;/p&gt;</summary><content type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
@@ -978,16 +978,18 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="Speeding-up-Computation"&gt;Speeding up Computation&lt;a class="anchor-link" href="#Speeding-up-Computation"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;The goal of PyMC3 is to be able to flexibly define Bayesian models, so we don't want to restrict users to the case where the GP prior is conjugate to the likelihood.  It should be easy to use non-conjugate likelihoods.  Also, I think any tricks we might employ should be transparent to the user, but optional.  Perhaps each could be turned on by setting a flag.&lt;/p&gt;
-&lt;p&gt;The computational complexity of the Cholesky decomposition is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).  For PyMC3, Theano also needs to be able to compute the gradient.&lt;/p&gt;
+&lt;p&gt;The goal of PyMC3 is to be able to flexibly define Bayesian models.  So, we don't want to restrict users to the case where the GP prior is conjugate to the likelihood.  It should be easy to use non-conjugate likelihoods.  I think any tricks we might employ should be visible to the user and optional with a smart way of choosing defaults.  Each could be turned on by setting a flag.&lt;/p&gt;
+&lt;h1 id="Speeding-up-Computation"&gt;Speeding up Computation&lt;a class="anchor-link" href="#Speeding-up-Computation"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;The computational complexity of the Cholesky decomposition is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).  For PyMC3, Theano also needs to be able to compute the gradient.&lt;/p&gt;
 &lt;p&gt;The three main ways that I've been able to find in the literature of reducing the $\mathcal{O}(n^3)$ complexity from the Cholesky decomposition can be summarized very roughly as:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Exploit special structure in the matrix $K$ with specialized linear algebra algorithms&lt;/li&gt;
 &lt;li&gt;Make $K$ effectively smaller ("inducing point methods")&lt;/li&gt;
-&lt;li&gt;Variational methods (not discussed here, I need to read some more!)&lt;/li&gt;
+&lt;li&gt;Variational methods (not discussed here, I'm still reading!)&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id="1.--Exploiting-Matrix-Structure"&gt;1.  Exploiting Matrix Structure&lt;a class="anchor-link" href="#1.--Exploiting-Matrix-Structure"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The first set of methods exploits structure in the covariance matrix (or kernel) to speed up the solve operation.  Depending on the problem, these methods can be combined.&lt;/p&gt;
-&lt;/div&gt;
+&lt;p&gt;This post is about 1.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="Exploiting-Matrix-Structure"&gt;Exploiting Matrix Structure&lt;a class="anchor-link" href="#Exploiting-Matrix-Structure"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The first set of methods exploits structure in the covariance matrix (or kernel) to speed up the solve operation.  Depending on the problem, these methods can be combined.&lt;/p&gt;
+&lt;/hr&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
@@ -1204,7 +1206,7 @@ GAAK/F90ZWL42+bVkAAAAABJRU5ErkJggg==
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;To include in PyMC3 this would require a new Op and gradient to be implemented (eventually, preferably) in Theano. This may also benefit some time series methods.&lt;/p&gt;
+&lt;p&gt;To include this in PyMC3 would require a new Op and gradient to be implemented (eventually, preferably) in Theano. This may also benefit some time series methods.&lt;/p&gt;
 &lt;h5 id="References"&gt;References&lt;a class="anchor-link" href="#References"&gt;¶&lt;/a&gt;&lt;/h5&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://arxiv.org/abs/1503.01057"&gt;KISS-GP&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://icml2008.cs.helsinki.fi/papers/151.pdf"&gt;Cunningham et al.&lt;/a&gt;&lt;/li&gt;
@@ -1398,7 +1400,7 @@ SVIhi1iSpEIWsSRJhf4/R6xxe+w18AQAAAAASUVORK5CYII=
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;$K = K_1 \otimes K_2$ has no diagonal noise term.  If we add a diagonal noise term, $K' = K_1 \otimes K_2 + \sigma^2 I$, then the &lt;code&gt;eigh&lt;/code&gt; routine can be used instead of the Cholesky to decompose individual matrices instead of the Cholesky, and the speedup is still obtained.&lt;/p&gt;
-&lt;p&gt;I think an implementation in PyMC3 would be best done within the &lt;code&gt;GP&lt;/code&gt; class.  Perhaps if the &lt;code&gt;cov_func&lt;/code&gt; argument was given a list of covariance matrices and a list of inputs, the &lt;code&gt;GP&lt;/code&gt; class would be able to sort it out.  For instance, something like&lt;/p&gt;
+&lt;p&gt;I think an implementation in PyMC3 would be best done within the &lt;code&gt;GP&lt;/code&gt; class.  If the &lt;code&gt;cov_func&lt;/code&gt; argument was given a list of covariance matrices and a list of inputs, the &lt;code&gt;GP&lt;/code&gt; class would be able to sort it out.  For instance, something like&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;gp = pm.gp.GP('gp', cov_func=[k1, k2, k3], inputs=[x1, x2, x3])
 
 &lt;/code&gt;&lt;/pre&gt;
@@ -1430,7 +1432,7 @@ with $p &lt; n$.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [5]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;linspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)[:,&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -1754,48 +1756,9 @@ hBBCiBpoMSWEEEIIUQMtpoQQQgghaqDFlBBCCCFEDbSYEkIIIYSogRZTQgghhBA10GJKCCGEEKIG
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Making-$n$-Smaller"&gt;Making $n$ Smaller&lt;a class="anchor-link" href="#Making-$n$-Smaller"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;h3 id="Inducing-Point-Methods"&gt;Inducing Point Methods&lt;a class="anchor-link" href="#Inducing-Point-Methods"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;The two most popular inducing point approaches are SoR (subset of regressors) and FITC (...).&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h3 id="SKI-(Structured-Kernel-Interpolation)"&gt;SKI (Structured Kernel Interpolation)&lt;a class="anchor-link" href="#SKI-(Structured-Kernel-Interpolation)"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;is described in the KISS-GP paper.  This method is a generalization of inducing point methods, such as SoR and FITC.  This method doesn't exploit matrix structure directly itself, but gridded inducing points can be used to produce approximate covariance matrices with Toeplitz and/or Kronecker structure.  The idea is to approximate the true covariance matrix with an interpolated covariance matrix.&lt;/p&gt;
-&lt;p&gt;First a grid of $m$ inducing points $U$ over the domain of $X$, which has $n$ data points. The kernel matrix computed at the inducing points is denoted $K_{U,U}$.  The true covariance matrix $K_{X,X}$ can be approximated as
-$$
-K_{X,X} \approx W K_{U,U} W^T
-$$
-where $W$ is a matrix of interpolation weights.  Depending on the interpolation scheme used, $W$ can be very sparse.  For example, if $W$ represents local cubic interpolation, each row of $W$ will have 4 non-zero entries.  It isn't strictly necessary for the inducing points to be regularly spaced or on a multidimensional grid.  However, placing them on a grid enables special matrix inversion methods for Kronecker and Toeplitz structured matrices to be used.  The complexity of SKI depends on the number of inducing points used and how they are structured.&lt;/p&gt;
-&lt;p&gt;The authors refer to SKI+Toeplitz+Kronecker as KISS-GP. It is implemented in the GPML version 4.0 MATLAB package.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://arxiv.org/abs/1503.01057"&gt;KISS-GP&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.gaussianprocess.org/gpml/code/matlab/doc/"&gt;GPML V4.0&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://arxiv.org/abs/1511.01870"&gt;Wilson et al. 2015&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Conclusion"&gt;Conclusion&lt;a class="anchor-link" href="#Conclusion"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;This was a summary of GP's and how possible speedups work.  Many of them can be mixed and matched in different ways, but all have tradeoffs.  Many require the covariance matrix to have special structure, and so cannot be used in all cases.  Other speedups approximate the gaussian process model, so the solutions are inexact.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; 
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
+&lt;hr&gt;
+&lt;h2 id="Next-..."&gt;Next ...&lt;a class="anchor-link" href="#Next-..."&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;There are other approaches out there.  I plan on adding them as I come across them.  The next post is about point number two, inducing point methods.&lt;/p&gt;
+&lt;/hr&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -2830,21 +2793,27 @@ $$&lt;p&gt;The first two lines are the priors on the hyperparameters of the mean
 &lt;li&gt;Infer the posterior distributions of $\theta$, $\phi$ and $f$. &lt;/li&gt;
 &lt;li&gt;Obtain the predictive distribution for the GP at new locations (denoted $x_*$)&lt;/li&gt;
 &lt;/ol&gt;
+&lt;hr&gt;
 &lt;h2 id="Inferring-the-posterior-distribution-of-the-hyperparameters"&gt;Inferring the posterior distribution of the hyperparameters&lt;a class="anchor-link" href="#Inferring-the-posterior-distribution-of-the-hyperparameters"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After specifying the priors and fully defining the model, the first computational step is to infer the posterior distributions of the unknown hyperparameters, $\phi$ and $\theta$, and the GP $f$.  The joint posterior distribution of the hyperparameters $\theta, \phi$ and the gaussian process $f$ is&lt;/p&gt;
 $$
 p(\phi\,, \theta\,, f \mid D) \propto p(D \mid \phi \,, \theta \,, f) p(f \mid \phi \,, \theta) p(\theta \,, \phi) \,.
 $$&lt;p&gt;&lt;/p&gt;
 &lt;p&gt;The GP is represented by the term $p(f \mid \phi \,, \theta)$, and is a multivariate normal,&lt;/p&gt;
 $$
-p(f \mid \phi \,, \theta) = \frac{1}{\sqrt{ | 2\pi K |} } \exp{( -\frac{1}{2} (\mu - f)^T K^{-1} (\mu - f) )}
-$$&lt;p&gt;to keep the notation simple, we neglect to denote the fact that the $\mu$ and $f$ vectors are functions of the hyperparameters $\phi$, $\theta$ and of the input locations $x$.  It is often the case in practice that the mean function is the zero vector, $\mu = 0$ (so there are no $\phi$ hyperparameters).  In order to evaluate the GP prior, we need to compute the determinant of $K$ and invert $K$.&lt;/p&gt;
+p(f \mid \phi \,, \theta) = \frac{1}{\sqrt{ | 2\pi K |} } \exp{( -\frac{1}{2} (\mu - f)^T K^{-1} (\mu - f) )} \,.
+$$&lt;p&gt;To keep the notation simple, we neglect to denote the fact that the $\mu$ and $f$ vectors are functions of the hyperparameters $\phi$, $\theta$ and of the input locations $x$.&lt;/p&gt;
+&lt;p&gt;It's often the case in practice that the mean function is the zero vector, $\mu = 0$ (so there are no $\phi$ hyperparameters).  In order to evaluate the GP prior, we need to compute the determinant of $K$ and invert $K$. 
+To keep things general, I keep $\mu$ in throughout the rest of post.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;say something about the mean function, why set it to zero, why not&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;The standard way of doing this is via the Cholesky decomposition.  The Cholesky decomposition is a way to compute a "matrix square root", $K = LL^T$.  The triangular $L$ can be used to both compute the determinant, and compute $(\mu - f) K^{-1}$ indirectly via a solve.  Below is a code snippet evaluating the log-likelihood, including a timing comparison with Scipy's built in multivariate normal &lt;code&gt;logpdf&lt;/code&gt; method, which uses the slower SVD decomposition under the hood to control small eigenvalues in the covariance matrix.&lt;/p&gt;
-&lt;/div&gt;
+&lt;/hr&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
@@ -2865,7 +2834,7 @@ $$&lt;p&gt;to keep the notation simple, we neglect to denote the fact that the $
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;scipy.stats&lt;/span&gt;
@@ -2891,11 +2860,11 @@ $$&lt;p&gt;to keep the notation simple, we neglect to denote the fact that the $
 &lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_stream output_stdout output_text"&gt;
 &lt;pre&gt;Using cholesky implementation
-The slowest run took 7.83 times longer than the fastest. This could mean that an intermediate result is being cached.
-1000 loops, best of 3: 1.45 ms per loop
+The slowest run took 13.88 times longer than the fastest. This could mean that an intermediate result is being cached.
+1000 loops, best of 3: 1.56 ms per loop
 
 Using scipy implementation (which uses the SVD)
-100 loops, best of 3: 18.9 ms per loop
+100 loops, best of 3: 18.3 ms per loop
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2916,6 +2885,7 @@ Using scipy implementation (which uses the SVD)
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;hr&gt;
 &lt;h2 id="Conjugacy"&gt;Conjugacy&lt;a class="anchor-link" href="#Conjugacy"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;An important special case for GPs is when the noise on the observed data $D$ is normally distributed.  The model in this case is,&lt;/p&gt;
 $$
 \begin{align}
@@ -2936,17 +2906,17 @@ $$
 \int p(D \mid \phi \,, \theta \,, f) p(f \mid \phi \,, \theta) df = p(D \mid \phi \,, \theta) = N(0, K + \sigma^2 I) \,.
 $$&lt;p&gt;Since this is a multivariate normal distribution, we can use the same Cholesky based routine that was used above to compute the marginal likelihood, replacing $K$ with $K + \sigma^2 I$ (or $K + K_{noise}$).  The big takeaway here is that we can get the posterior distribution of $\phi$ and $\theta$, without having to get the $n$ dimensional posterior distribution of $f$.  This is much easier and faster to do.  Also, we can use the same computational routine needed to evaluate the probability of the GP prior, to compute the infer the posterior distributions of $\theta$ and $\phi$.&lt;/p&gt;
 &lt;h3 id="PyMC3-Example:"&gt;PyMC3 Example:&lt;a class="anchor-link" href="#PyMC3-Example:"&gt;¶&lt;/a&gt;&lt;/h3&gt;
-&lt;/div&gt;
+&lt;/hr&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [7]:&lt;/div&gt;
+&lt;div class="prompt input_prompt"&gt;In [4]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="input_area"&gt;
 &lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# add pymc3 master to path&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
-&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"/home/bill/pymc3/"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"~/pymc3/"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pymc3&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pm&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;theano.tensor&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;tt&lt;/span&gt;
@@ -2972,294 +2942,282 @@ $$&lt;p&gt;Since this is a multivariate normal distribution, we can use the same
 &lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_png output_subarea "&gt;
 &lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY4AAAEWCAYAAABxMXBSAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
-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
+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
 "&gt;
 &lt;/img&gt;&lt;/div&gt;
 &lt;/div&gt;
@@ -4622,12 +4580,13 @@ AAAAAElFTkSuQmCC
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;hr&gt;
 &lt;h2 id="Non-Conjugacy"&gt;Non-Conjugacy&lt;a class="anchor-link" href="#Non-Conjugacy"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;In the non-conjugate case, the integral&lt;/p&gt;
 $$
 \int p(\phi\,, \theta\,, f \mid D) \, df \propto \int p(D \mid \phi \,, \theta \,, f) p(f \mid \phi \,, \theta) p(\theta \,, \phi) \, df 
 $$&lt;p&gt;has no analytic solution.  MCMC or variational inference methods need to be used to estimate the posterior $p(f \,, \phi \,, \theta \mid D)$ directly.  This is very challenging! The GP $f$ is $n$ dimensional (where $n$ is the number of data points) and highly correlated, which are basically the two things that make sampling difficult.  And there is no guarantee it won't be multimodal, why not throw that in too.&lt;/p&gt;
 &lt;p&gt;The GP library &lt;a href="https://github.com/GPflow/GPflow"&gt;GPflow&lt;/a&gt; uses a really nice reparameterization of the model that takes care of the 'highly correlated' issue.  This reparameterization is enabled by the ability to automatically propagate gradients through the Cholesky decomposition.  See &lt;a href="http://gpflow.readthedocs.io/en/latest/notebooks/mcmc.html"&gt;here&lt;/a&gt; for a full description.&lt;/p&gt;
-&lt;p&gt;In summary, the model is reparameterized as&lt;/p&gt;
+&lt;p&gt;The model is reparameterized as&lt;/p&gt;
 $$
 \begin{align}
 \phi \sim \mathrm{Prior}&amp; \\
@@ -4637,9 +4596,12 @@ v \sim N(0, 1) &amp; \\
 f = \mu(\phi;\,x) + Lv &amp;  \\
 D \sim \mathrm{Likelihood}(f \mid \phi \,, \theta \,, x)&amp; \\
 \end{align}
-$$&lt;p&gt;where the new random variable is not $f$ anymore, but $v$.  The posterior distribution of $v$ will be &lt;strong&gt;much&lt;/strong&gt; less correlated than the posterior distribution of $f$.&lt;/p&gt;
+$$&lt;ul&gt;
+&lt;li&gt;the cholesky is used in both the non-conjugate case and the conjugate case.  Here its explicit because its used in the reparameterization of the model.  this reparameterization is for the non-conjugate case. for the conjugate case you still need the cholesky to evaluate the multivariate normal log likelihood.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;where the new random variable is not $f$ anymore, but $v$.  The posterior distribution of $v$ will be &lt;strong&gt;much&lt;/strong&gt; less correlated than the posterior distribution of $f$.&lt;/p&gt;
 &lt;h3 id="PyMC3-Example:"&gt;PyMC3 Example:&lt;a class="anchor-link" href="#PyMC3-Example:"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;In this model the observed data is still normal, but we don't exploit conjugacy to infer the posterior of $\theta$, $\phi$, and (in this case) $v$.&lt;/p&gt;
-&lt;/div&gt;
+&lt;/hr&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
@@ -7261,6 +7223,7 @@ pVAoFAqFQqFQKBTnCWVgKRQKhUKhUCgUCsV5QhlYCoVCoVAoFAqFQnGeUAaWQqFQKBQKhUKhUJwn
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;hr&gt;
 &lt;h2 id="Prediction"&gt;Prediction&lt;a class="anchor-link" href="#Prediction"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Similar calculations are involved in prediction.  The determinant isn't required anymore, but we still need to invert $K(x, x')$.  As is pretty standard, the predictions of the GP at the inputs $x_*$ are denoted $f_*$.&lt;br&gt;
 The predictive distribution is $p(f_* \mid f\,, \phi \,, \theta)$.&lt;/br&gt;&lt;/p&gt;
 &lt;p&gt;If values of $\theta$ and $\phi$, the covariance and mean function hyperparameters, are given, then $K$ and $\mu$ is given (for arbitrary input points $x$).  The value of $f$ at the original inputs $x$ also needs to be given.  Conditional on these values, the predictive distribution of $f_*$ is gaussian.  The predicted value $f_*$ of the GP conditioned on a value of $\theta$ and a value of $f$ is&lt;/p&gt;
@@ -7275,7 +7238,7 @@ f \mid x, f &amp;\sim N(\mu + K(x, x) K(x, x)^{-1} f, K(x, x) - K(x, x) K(x, x)^
 f &amp;\sim N(\mu + f, 0)
 \end{align}
 $$&lt;p&gt;which is just the given value of $f$ (notice that the covariance is zero).  This is just for the GP though, instances of which may not be the observed data.  The observed data could follow any distribution, and the likelihood function of the data could be anything.  If we were predicting new data points $D_*$, we would need to condition the likelihood function of the observed data on $f_*$.&lt;/p&gt;
-&lt;/div&gt;
+&lt;/hr&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;
@@ -7286,7 +7249,7 @@ $$&lt;p&gt;which is just the given value of $f$ (notice that the covariance is z
 &lt;p&gt;The case where the GP $f$, or a noisy version of it, &lt;strong&gt;is&lt;/strong&gt; observed can exploit conjugacy.  The conditional distribution is similar, but the noise is incorporated,&lt;/p&gt;
 $$
 p(f_* \mid \phi \,, \theta \,, f) \sim N(\mu + K(x_*, x) [K(x,x) + \sigma^2 I]^{-1} f \,, K(x_*, x_*) - K(x_*, x) [K(x,x) + \sigma^2 I]^{-1} K(x, x_*))
-$$&lt;h3 id="Computations-in-PyMC3"&gt;Computations in PyMC3&lt;a class="anchor-link" href="#Computations-in-PyMC3"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;It is pretty straightforward currently to do inference on GP the hyperparameters within PyMC3.  The tricky part is doing prediction.  The goal of some of my GSoC work this summer will be to make this just as straightfoward.&lt;/p&gt;
+$$&lt;h3 id="Computations-in-PyMC3"&gt;Computations in PyMC3&lt;a class="anchor-link" href="#Computations-in-PyMC3"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;It is straightforward currently to do inference on GP the hyperparameters within PyMC3.  The tricky part is doing prediction.  The goal of some of my GSoC work this summer will be to make this just as straightfoward.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -7295,8 +7258,14 @@ $$&lt;h3 id="Computations-in-PyMC3"&gt;Computations in PyMC3&lt;a class="anchor-
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Conclusion"&gt;Conclusion&lt;a class="anchor-link" href="#Conclusion"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The main bottleneck in gaussian process computation is the inversion and determinant of $K$.  A good way of computing these two quantities in general is with the Cholesky decomposition.  It's computational complexity is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).  For PyMC3, Theano also needs to be able to compute the gradient.  In the next post, I'll itemize some options for speeding up GPs in PyMC3.&lt;/p&gt;
-&lt;/div&gt;
+&lt;h2 id="Next-time-..."&gt;Next time ...&lt;a class="anchor-link" href="#Next-time-..."&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The main bottleneck in gaussian process computation is the inversion and determinant of $K$.  A good way of computing these two quantities in general is with the Cholesky decomposition.  It's computational complexity is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).  For PyMC3, Theano also needs to be able to compute the gradient.  In the next post, I'll itemize some options for speeding up GPs in PyMC3.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;everything in the conclusion is new information.  the stuff in here is next time on.&lt;/li&gt;
+&lt;li&gt;before this, never say the main bottleneck is inversion of K, never say complexity is O(n^3), never mention theano&lt;/li&gt;
+&lt;li&gt;this section would be legit if it was called "Next time..."&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;/hr&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
