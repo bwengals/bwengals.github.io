@@ -1027,8 +1027,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Gaussian-Processes">Gaussian Processes<a class="anchor-link" href="#Gaussian-Processes">¶</a></h1><p>This post outlines some potential strategies to speed up GPs in PyMC3.  The first part is a from-the-ground-up description of gaussian process models without becoming distracted by conjugacy.  Before looking for places to pick up computational speedups, it's important to understand the math.  Most descriptions of gaussian processes (at least that I've found) describe the conjugate case and then stop, neglecting the general case.  For the sake of bringing something different to the table, I thought it would be nice to not focus on the conjugate case.</p>
-<p>In the general case, the GP model can be written as</p>
+<p>These two posts describe gaussian process models and outline some potential strategies to speed up GPs in PyMC3.  The first part is a from-the-ground-up description of Bayesian gaussian process models.  Before looking for places to pick up computational speedups, it's important to look closely at the math.  Most descriptions of gaussian processes (at least that I've found) focus on the conjugate case, but here I want to focus more on the general case.</p>
+<h1 id="Gaussian-Processes">Gaussian Processes<a class="anchor-link" href="#Gaussian-Processes">¶</a></h1><p>In the general case, the GP model can be written as</p>
 $$
 \begin{align}
 \phi \sim \mathrm{Prior}& \\
@@ -1036,7 +1036,7 @@ $$
 f \sim \mathcal{GP}(\mu(\phi;\,x),\, K(\theta;\, x, x')) & \\
 D \sim \mathrm{Likelihood}(f \mid \phi, \theta, x)
 \end{align}
-$$<p>There is a lot happening in these three lines.  The first two lines are the priors on the hyperparameters of the mean and covariance functions.  The next line is the prior on $f$, which is a gaussian process.  The last line is the likelihood of the observed data $D$ given the GP.  The key for the variables is:</p>
+$$<p>The first two lines are the priors on the hyperparameters of the mean and covariance functions.  The next line is the prior on $f$, which is a gaussian process.  The last line is the likelihood of the observed data $D$ given the GP.  The key for the variables is:</p>
 <ul>
 <li>$f$: Realization of the GP</li>
 <li>$x$: Inputs, locations where the GP $f$ is realized</li>
@@ -1058,7 +1058,7 @@ $$<p></p>
 <p>The GP is represented by the term $p(f \mid \phi \,, \theta)$, and is a multivariate normal,</p>
 $$
 p(f \mid \phi \,, \theta) = \frac{1}{\sqrt{ | 2\pi K |} } \exp{( -\frac{1}{2} (\mu - f)^T K^{-1} (\mu - f) )}
-$$<p>to keep the notation simple, we neglect the fact that the $\mu$ and $f$ vectors are functions of the hyperparameters $\phi$, $\theta$ and of the input locations $x$.  It is often the case in practice that the mean function is the zero vector, $\mu = 0$ (so there are no $\phi$ hyperparameters).  In order to evaluate the GP prior, we need to compute the determinant of $K$ and invert $K$.</p>
+$$<p>to keep the notation simple, we neglect to denote the fact that the $\mu$ and $f$ vectors are functions of the hyperparameters $\phi$, $\theta$ and of the input locations $x$.  It is often the case in practice that the mean function is the zero vector, $\mu = 0$ (so there are no $\phi$ hyperparameters).  In order to evaluate the GP prior, we need to compute the determinant of $K$ and invert $K$.</p>
 <p>The standard way of doing this is via the Cholesky decomposition.  The Cholesky decomposition is a way to compute a "matrix square root", $K = LL^T$.  The triangular $L$ can be used to both compute the determinant, and compute $(\mu - f) K^{-1}$ indirectly via a solve.  Below is a code snippet evaluating the log-likelihood, including a timing comparison with Scipy's built in multivariate normal <code>logpdf</code> method, which uses the slower SVD decomposition under the hood to control small eigenvalues in the covariance matrix.</p>
 </div>
 </div>
@@ -1156,7 +1156,7 @@ $$<p>Using conjugacy, the remaining integral on the right hand side can be done 
 $$
 \int p(D \mid \phi \,, \theta \,, f) p(f \mid \phi \,, \theta) df = p(D \mid \phi \,, \theta) = N(0, K + \sigma^2 I) \,.
 $$<p>Since this is a multivariate normal distribution, we can use the same Cholesky based routine that was used above to compute the marginal likelihood, replacing $K$ with $K + \sigma^2 I$ (or $K + K_{noise}$).  The big takeaway here is that we can get the posterior distribution of $\phi$ and $\theta$, without having to get the $n$ dimensional posterior distribution of $f$.  This is much easier and faster to do.  Also, we can use the same computational routine needed to evaluate the probability of the GP prior, to compute the infer the posterior distributions of $\theta$ and $\phi$.</p>
-<h3 id="PyMC3-example">PyMC3 example<a class="anchor-link" href="#PyMC3-example">¶</a></h3><p>Here is a model where the observed data is normal, but we don't exploit conjugacy to infer the posterior of $\theta$, $\phi$, and (in this case) $v$.</p>
+<h3 id="PyMC3-Example:">PyMC3 Example:<a class="anchor-link" href="#PyMC3-Example:">¶</a></h3>
 </div>
 </div>
 </div>
@@ -1496,7 +1496,7 @@ i0gU8IGIXGGMecvq2JQaCm1xKKWU8omOcSillPKJJg6llFI+0cShlFLKJ5o4lFJK+UQTh1JKKZ9o
 <span class="n">BoundedNormal</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Bound</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># define gp model in pymc3</span>
-<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">non_conjugate_gp</span><span class="p">:</span>
+<span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">conjugate_gp</span><span class="p">:</span>
     <span class="n">σsq_gp</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">HalfCauchy</span><span class="p">(</span><span class="s2">"σsq_gp"</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># scales the covariance function</span>
     <span class="n">ℓ</span> <span class="o">=</span> <span class="n">BoundedNormal</span><span class="p">(</span><span class="s2">"ℓ"</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>      <span class="c1"># lengthscale of the covariance function (weakly informative)</span>
     
@@ -1511,7 +1511,7 @@ i0gU8IGIXGGMecvq2JQaCm1xKKWU8omOcSillPKJJg6llFI+0cShlFLKJ5o4lFJK+UQTh1JKKZ9o
     <span class="n">D_obs</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">MvNormal</span><span class="p">(</span><span class="s1">'D_obs'</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="n">μ</span><span class="p">,</span> <span class="n">cov</span><span class="o">=</span><span class="n">K</span> <span class="o">+</span> <span class="n">σsq_D</span> <span class="o">*</span> <span class="n">tt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">observed</span><span class="o">=</span><span class="n">D</span><span class="p">)</span>
 
 <span class="c1"># draw samples</span>
-<span class="k">with</span> <span class="n">non_conjugate_gp</span><span class="p">:</span>
+<span class="k">with</span> <span class="n">conjugate_gp</span><span class="p">:</span>
     <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
     
 <span class="n">pm</span><span class="o">.</span><span class="n">traceplot</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="mi">500</span><span class="p">:],</span> <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s2">"ℓ"</span><span class="p">,</span> <span class="s2">"σsq_gp"</span><span class="p">,</span> <span class="s2">"σsq_D"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">]);</span>
@@ -2859,7 +2859,7 @@ f = \mu(\phi;\,x) + Lv &  \\
 D \sim \mathrm{Likelihood}(f \mid \phi \,, \theta \,, x)& \\
 \end{align}
 $$<p>where the new random variable is not $f$ anymore, but $v$.  The posterior distribution of $v$ will be <strong>much</strong> less correlated than the posterior distribution of $f$.</p>
-<h3 id="PyMC3-Example">PyMC3 Example<a class="anchor-link" href="#PyMC3-Example">¶</a></h3>
+<h3 id="PyMC3-Example:">PyMC3 Example:<a class="anchor-link" href="#PyMC3-Example:">¶</a></h3><p>In this model the observed data is still normal, but we don't exploit conjugacy to infer the posterior of $\theta$, $\phi$, and (in this case) $v$.</p>
 </div>
 </div>
 </div>
