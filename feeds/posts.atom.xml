@@ -2791,7 +2791,7 @@ $$&lt;p&gt;The first two lines are the priors on the hyperparameters of the mean
 &lt;p&gt;There are two tasks that will need to be accomplished when using GP models,&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Infer the posterior distributions of $\theta$, $\phi$ and $f$. &lt;/li&gt;
-&lt;li&gt;Obtain the predictive distribution for the GP at new locations (denoted $x_*$)&lt;/li&gt;
+&lt;li&gt;Obtain the predictive distribution for the GP at new locations, denoted $x_*$.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
 &lt;h2 id="Inferring-the-posterior-distribution-of-the-hyperparameters"&gt;Inferring the posterior distribution of the hyperparameters&lt;a class="anchor-link" href="#Inferring-the-posterior-distribution-of-the-hyperparameters"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After specifying the priors and fully defining the model, the first computational step is to infer the posterior distributions of the unknown hyperparameters, $\phi$ and $\theta$, and the GP $f$.  The joint posterior distribution of the hyperparameters $\theta, \phi$ and the gaussian process $f$ is&lt;/p&gt;
@@ -2802,12 +2802,8 @@ $$&lt;p&gt;&lt;/p&gt;
 $$
 p(f \mid \phi \,, \theta) = \frac{1}{\sqrt{ | 2\pi K |} } \exp{( -\frac{1}{2} (\mu - f)^T K^{-1} (\mu - f) )} \,.
 $$&lt;p&gt;To keep the notation simple, we neglect to denote the fact that the $\mu$ and $f$ vectors are functions of the hyperparameters $\phi$, $\theta$ and of the input locations $x$.&lt;/p&gt;
-&lt;p&gt;It's often the case in practice that the mean function is the zero vector, $\mu = 0$ (so there are no $\phi$ hyperparameters).  In order to evaluate the GP prior, we need to compute the determinant of $K$ and invert $K$. 
-To keep things general, I keep $\mu$ in throughout the rest of post.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;say something about the mean function, why set it to zero, why not&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The standard way of doing this is via the Cholesky decomposition.  The Cholesky decomposition is a way to compute a "matrix square root", $K = LL^T$.  The triangular $L$ can be used to both compute the determinant, and compute $(\mu - f) K^{-1}$ indirectly via a solve.  Below is a code snippet evaluating the log-likelihood, including a timing comparison with Scipy's built in multivariate normal &lt;code&gt;logpdf&lt;/code&gt; method, which uses the slower SVD decomposition under the hood to control small eigenvalues in the covariance matrix.&lt;/p&gt;
+&lt;p&gt;It's often the case in practice that the mean function is the zero vector, $\mu = 0$ (so there are no $\phi$ hyperparameters).  Often the data can be rescaled to have a mean of zero before building a GP model.  Often, a simple mean function, such as constant or linear does improves the model.  However, in more physical situations, the mean function may be something from theory.  Throughout the rest of this post, we include a mean function for generality.&lt;/p&gt;
+&lt;p&gt;In order to evaluate the GP prior, we need to compute the determinant of $K$ and invert $K$.  The standard way of doing this is via the Cholesky decomposition.  The Cholesky decomposition is a way to compute a "matrix square root", $K = LL^T$.  The triangular $L$ can be used to both compute the determinant, and compute $(\mu - f) K^{-1}$ indirectly via a solve.  Below is a code snippet evaluating the log-likelihood, including a timing comparison with SciPy's built in multivariate normal &lt;code&gt;logpdf&lt;/code&gt; method, which uses the slower SVD decomposition under the hood to control small eigenvalues in the covariance matrix.&lt;/p&gt;
 &lt;/hr&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2876,7 +2872,7 @@ Using scipy implementation (which uses the SVD)
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Notice the Cholesky implementation is about 20x faster (on my laptop).  However, the Scipy version will be more accurate, and won't throw an error, when the decomposition is numerically unstable and some eigenvalues in $K$ are close to zero.&lt;/p&gt;
+&lt;p&gt;Notice the Cholesky implementation is about 20x faster (on my laptop).  However, the SciPy version will be more accurate and won't throw an error when the decomposition is numerically unstable and some eigenvalues in $K$ are close to zero.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2894,7 +2890,7 @@ $$
 f \sim \mathcal{GP}(\mu(\phi;\,x),\, K(\theta;\, x, x')) &amp; \\
 D_i \sim N(f_i, \sigma^2)
 \end{align}
-$$&lt;p&gt;Note that there is no need for the noise to be white, specifically.  If the observed noise wasn't white, we can modify the last line of the model to be $D \sim N(f, K_{noise})$, where $K_{noise}$ is the covariance of the noise (which may also be from a covariance function with unknown hyperparameters) which would be multivariate normally distributed.&lt;/p&gt;
+$$&lt;p&gt;Note that there is no need for the noise to be white, or IID.  If the observed noise isn't white, we can modify the last line of the model to be $D \sim N(f, K_{noise})$, where $K_{noise}$ is the covariance of the noise (which may also be from a covariance function with unknown hyperparameters) which would be multivariate normally distributed.&lt;/p&gt;
 &lt;p&gt;Exploiting conjugacy in GPs can be viewed as a way of speeding up computation when the observed data follows a normal distribution.  The GP prior is conjugate to the likelihood, since they are both normal.  In the conjugate case, the GP $f$ can be integrated out, yielding the &lt;em&gt;marginal&lt;/em&gt; likelihood,&lt;/p&gt;
 $$
 \begin{align}
@@ -7249,7 +7245,8 @@ $$&lt;p&gt;which is just the given value of $f$ (notice that the covariance is z
 &lt;p&gt;The case where the GP $f$, or a noisy version of it, &lt;strong&gt;is&lt;/strong&gt; observed can exploit conjugacy.  The conditional distribution is similar, but the noise is incorporated,&lt;/p&gt;
 $$
 p(f_* \mid \phi \,, \theta \,, f) \sim N(\mu + K(x_*, x) [K(x,x) + \sigma^2 I]^{-1} f \,, K(x_*, x_*) - K(x_*, x) [K(x,x) + \sigma^2 I]^{-1} K(x, x_*))
-$$&lt;h3 id="Computations-in-PyMC3"&gt;Computations in PyMC3&lt;a class="anchor-link" href="#Computations-in-PyMC3"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;It is straightforward currently to do inference on GP the hyperparameters within PyMC3.  The tricky part is doing prediction.  The goal of some of my GSoC work this summer will be to make this just as straightfoward.&lt;/p&gt;
+$$&lt;h3 id="Computations-in-PyMC3"&gt;Computations in PyMC3&lt;a class="anchor-link" href="#Computations-in-PyMC3"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;It is straightforward currently to do inference on GP the hyperparameters within PyMC3.  The tricky part is doing prediction.  The goal of some of my GSoC work this summer will be to make this just as straightfoward. 
+The main bottleneck in gaussian process computation is the inversion and determinant of $K$.  A good way of computing these two quantities in general is with the Cholesky decomposition.  It's computational complexity is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -7258,25 +7255,9 @@ $$&lt;h3 id="Computations-in-PyMC3"&gt;Computations in PyMC3&lt;a class="anchor-
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Next-time-..."&gt;Next time ...&lt;a class="anchor-link" href="#Next-time-..."&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The main bottleneck in gaussian process computation is the inversion and determinant of $K$.  A good way of computing these two quantities in general is with the Cholesky decomposition.  It's computational complexity is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).  For PyMC3, Theano also needs to be able to compute the gradient.  In the next post, I'll itemize some options for speeding up GPs in PyMC3.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;everything in the conclusion is new information.  the stuff in here is next time on.&lt;/li&gt;
-&lt;li&gt;before this, never say the main bottleneck is inversion of K, never say complexity is O(n^3), never mention theano&lt;/li&gt;
-&lt;li&gt;this section would be legit if it was called "Next time..."&lt;/li&gt;
-&lt;/ul&gt;
+&lt;h2 id="Next-time-..."&gt;Next time ...&lt;a class="anchor-link" href="#Next-time-..."&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;For PyMC3, Theano, which PyMC3 uses as a computation engine, also needs to be able to compute the gradient.  In the next post, I'll itemize some matrix structure exploiting options for speeding up GPs in PyMC3.&lt;/p&gt;
 &lt;hr&gt;
 &lt;/hr&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing code_cell rendered"&gt;
-&lt;div class="input"&gt;
-&lt;div class="prompt input_prompt"&gt;In [ ]:&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="input_area"&gt;
-&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt; 
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 

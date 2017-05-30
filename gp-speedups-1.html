@@ -1049,7 +1049,7 @@ $$<p>The first two lines are the priors on the hyperparameters of the mean and c
 <p>There are two tasks that will need to be accomplished when using GP models,</p>
 <ol>
 <li>Infer the posterior distributions of $\theta$, $\phi$ and $f$. </li>
-<li>Obtain the predictive distribution for the GP at new locations (denoted $x_*$)</li>
+<li>Obtain the predictive distribution for the GP at new locations, denoted $x_*$.</li>
 </ol>
 <hr>
 <h2 id="Inferring-the-posterior-distribution-of-the-hyperparameters">Inferring the posterior distribution of the hyperparameters<a class="anchor-link" href="#Inferring-the-posterior-distribution-of-the-hyperparameters">¶</a></h2><p>After specifying the priors and fully defining the model, the first computational step is to infer the posterior distributions of the unknown hyperparameters, $\phi$ and $\theta$, and the GP $f$.  The joint posterior distribution of the hyperparameters $\theta, \phi$ and the gaussian process $f$ is</p>
@@ -1060,12 +1060,8 @@ $$<p></p>
 $$
 p(f \mid \phi \,, \theta) = \frac{1}{\sqrt{ | 2\pi K |} } \exp{( -\frac{1}{2} (\mu - f)^T K^{-1} (\mu - f) )} \,.
 $$<p>To keep the notation simple, we neglect to denote the fact that the $\mu$ and $f$ vectors are functions of the hyperparameters $\phi$, $\theta$ and of the input locations $x$.</p>
-<p>It's often the case in practice that the mean function is the zero vector, $\mu = 0$ (so there are no $\phi$ hyperparameters).  In order to evaluate the GP prior, we need to compute the determinant of $K$ and invert $K$. 
-To keep things general, I keep $\mu$ in throughout the rest of post.</p>
-<ul>
-<li>say something about the mean function, why set it to zero, why not</li>
-</ul>
-<p>The standard way of doing this is via the Cholesky decomposition.  The Cholesky decomposition is a way to compute a "matrix square root", $K = LL^T$.  The triangular $L$ can be used to both compute the determinant, and compute $(\mu - f) K^{-1}$ indirectly via a solve.  Below is a code snippet evaluating the log-likelihood, including a timing comparison with Scipy's built in multivariate normal <code>logpdf</code> method, which uses the slower SVD decomposition under the hood to control small eigenvalues in the covariance matrix.</p>
+<p>It's often the case in practice that the mean function is the zero vector, $\mu = 0$ (so there are no $\phi$ hyperparameters).  Often the data can be rescaled to have a mean of zero before building a GP model.  Often, a simple mean function, such as constant or linear does improves the model.  However, in more physical situations, the mean function may be something from theory.  Throughout the rest of this post, we include a mean function for generality.</p>
+<p>In order to evaluate the GP prior, we need to compute the determinant of $K$ and invert $K$.  The standard way of doing this is via the Cholesky decomposition.  The Cholesky decomposition is a way to compute a "matrix square root", $K = LL^T$.  The triangular $L$ can be used to both compute the determinant, and compute $(\mu - f) K^{-1}$ indirectly via a solve.  Below is a code snippet evaluating the log-likelihood, including a timing comparison with SciPy's built in multivariate normal <code>logpdf</code> method, which uses the slower SVD decomposition under the hood to control small eigenvalues in the covariance matrix.</p>
 </hr></div>
 </div>
 </div>
@@ -1134,7 +1130,7 @@ Using scipy implementation (which uses the SVD)
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Notice the Cholesky implementation is about 20x faster (on my laptop).  However, the Scipy version will be more accurate, and won't throw an error, when the decomposition is numerically unstable and some eigenvalues in $K$ are close to zero.</p>
+<p>Notice the Cholesky implementation is about 20x faster (on my laptop).  However, the SciPy version will be more accurate and won't throw an error when the decomposition is numerically unstable and some eigenvalues in $K$ are close to zero.</p>
 </div>
 </div>
 </div>
@@ -1152,7 +1148,7 @@ $$
 f \sim \mathcal{GP}(\mu(\phi;\,x),\, K(\theta;\, x, x')) & \\
 D_i \sim N(f_i, \sigma^2)
 \end{align}
-$$<p>Note that there is no need for the noise to be white, specifically.  If the observed noise wasn't white, we can modify the last line of the model to be $D \sim N(f, K_{noise})$, where $K_{noise}$ is the covariance of the noise (which may also be from a covariance function with unknown hyperparameters) which would be multivariate normally distributed.</p>
+$$<p>Note that there is no need for the noise to be white, or IID.  If the observed noise isn't white, we can modify the last line of the model to be $D \sim N(f, K_{noise})$, where $K_{noise}$ is the covariance of the noise (which may also be from a covariance function with unknown hyperparameters) which would be multivariate normally distributed.</p>
 <p>Exploiting conjugacy in GPs can be viewed as a way of speeding up computation when the observed data follows a normal distribution.  The GP prior is conjugate to the likelihood, since they are both normal.  In the conjugate case, the GP $f$ can be integrated out, yielding the <em>marginal</em> likelihood,</p>
 $$
 \begin{align}
@@ -5507,7 +5503,8 @@ $$<p>which is just the given value of $f$ (notice that the covariance is zero). 
 <p>The case where the GP $f$, or a noisy version of it, <strong>is</strong> observed can exploit conjugacy.  The conditional distribution is similar, but the noise is incorporated,</p>
 $$
 p(f_* \mid \phi \,, \theta \,, f) \sim N(\mu + K(x_*, x) [K(x,x) + \sigma^2 I]^{-1} f \,, K(x_*, x_*) - K(x_*, x) [K(x,x) + \sigma^2 I]^{-1} K(x, x_*))
-$$<h3 id="Computations-in-PyMC3">Computations in PyMC3<a class="anchor-link" href="#Computations-in-PyMC3">¶</a></h3><p>It is straightforward currently to do inference on GP the hyperparameters within PyMC3.  The tricky part is doing prediction.  The goal of some of my GSoC work this summer will be to make this just as straightfoward.</p>
+$$<h3 id="Computations-in-PyMC3">Computations in PyMC3<a class="anchor-link" href="#Computations-in-PyMC3">¶</a></h3><p>It is straightforward currently to do inference on GP the hyperparameters within PyMC3.  The tricky part is doing prediction.  The goal of some of my GSoC work this summer will be to make this just as straightfoward. 
+The main bottleneck in gaussian process computation is the inversion and determinant of $K$.  A good way of computing these two quantities in general is with the Cholesky decomposition.  It's computational complexity is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).</p>
 </div>
 </div>
 </div>
@@ -5516,25 +5513,9 @@ $$<h3 id="Computations-in-PyMC3">Computations in PyMC3<a class="anchor-link" hre
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Next-time-...">Next time ...<a class="anchor-link" href="#Next-time-...">¶</a></h2><p>The main bottleneck in gaussian process computation is the inversion and determinant of $K$.  A good way of computing these two quantities in general is with the Cholesky decomposition.  It's computational complexity is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).  For PyMC3, Theano also needs to be able to compute the gradient.  In the next post, I'll itemize some options for speeding up GPs in PyMC3.</p>
-<ul>
-<li>everything in the conclusion is new information.  the stuff in here is next time on.</li>
-<li>before this, never say the main bottleneck is inversion of K, never say complexity is O(n^3), never mention theano</li>
-<li>this section would be legit if it was called "Next time..."</li>
-</ul>
+<h2 id="Next-time-...">Next time ...<a class="anchor-link" href="#Next-time-...">¶</a></h2><p>For PyMC3, Theano, which PyMC3 uses as a computation engine, also needs to be able to compute the gradient.  In the next post, I'll itemize some matrix structure exploiting options for speeding up GPs in PyMC3.</p>
 <hr>
 </hr></div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 
