@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>Ways to speed up gaussian processes in PyMC3, Part 2 - Bill Engels</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet" />-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="http://bwengals.github.io/theme/style.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://bwengals.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Bill Engels Full Atom Feed" />
+    <link href="http://bwengals.github.io/feeds/posts.atom.xml" type="application/atom+xml" rel="alternate" title="Bill Engels Categories Atom Feed" />
+  </head>
+  <body id="index" class="archive">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://bwengals.github.io">Bill Engels</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li><a href="http://bwengals.github.io/tags.html">tags</a></li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          Ways to speed up gaussian processes in PyMC3, Part 2
+        </h2>
+        
+        <div class="text-muted">Mon 29 May 2017</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Speeding-up-Computation">Speeding up Computation<a class="anchor-link" href="#Speeding-up-Computation">¶</a></h1><p>The goal of PyMC3 is to be able to flexibly define Bayesian models, so we don't want to restrict users to the case where the GP prior is conjugate to the likelihood.  It should be easy to use non-conjugate likelihoods.  Also, I think any tricks we might employ should be transparent to the user, but optional.  Perhaps each could be turned on by setting a flag.</p>
+<p>The computational complexity of the Cholesky decomposition is $\mathcal{O}(n^3)$, where $n$ is the number of rows or columns of the matrix being decomposed (and so the number of data points).  For PyMC3, Theano also needs to be able to compute the gradient.</p>
+<p>The three main ways that I've been able to find in the literature of reducing the $\mathcal{O}(n^3)$ complexity from the Cholesky decomposition can be summarized very roughly as:</p>
+<ol>
+<li>Exploit special structure in the matrix $K$ with specialized linear algebra algorithms</li>
+<li>Make $K$ effectively smaller ("inducing point methods")</li>
+<li>Variational methods (not discussed here, I need to read some more!)</li>
+</ol>
+<h2 id="1.--Exploiting-Matrix-Structure">1.  Exploiting Matrix Structure<a class="anchor-link" href="#1.--Exploiting-Matrix-Structure">¶</a></h2><p>The first set of methods exploits structure in the covariance matrix (or kernel) to speed up the solve operation.  Depending on the problem, these methods can be combined.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># add pymc3 master to path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"/home/bill/pymc3/"</span><span class="p">)</span>
+
+<span class="c1"># do imports</span>
+<span class="kn">import</span> <span class="nn">pymc3</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">theano</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Toeplitz-structure">Toeplitz structure<a class="anchor-link" href="#Toeplitz-structure">¶</a></h3><p>Each diagonal of a Toeplitz matrix is constant.  For instance, the following matrix is Toeplitz:</p>
+$$
+A = \begin{bmatrix}
+a & b & c & d & e \\
+f & a & b & c & d \\
+g & f & a & b & c \\
+h & g & f & a & b \\
+i & h & g & f & a 
+\end{bmatrix}
+$$<p>If a stationary covariance matrix is used, such as the Matern and Exponentiated Quadratic, and the inputs <code>X</code> are evenly spaced and one dimensional, then the resulting covariance matrix has Toeplitz structure.  An example of a covariance matrix with Toeplitz structure is shown below.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">50</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
+<span class="c1"># define and evaluate covariance function</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Matern32</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)(</span><span class="n">X</span><span class="p">))()</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">,</span>
+              <span class="n">interpolation</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span>
+              <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X</span><span class="p">)));</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+APfe3z64vSd59zXc973X8G+Y49ieHsf29Di2p8exPT3XfGzbQX4CAFtSRQkABU49gFtrt7fWHjms
+qnzf89yuyvIaTRzbXzg8pp9qrX20tfaGinWeR6Nje2S7n2it7bXW3rrl+s6zmWPbWntza+3jrbWH
+W2t/vvUaz6uJ54TvaK39UWvtE4fH1u/sTDi1Sube+6n9ycH7M//vJD+Q5IYkn0hy61XbvCXJH+fg
+Hbt/Kslfn+aaduXP5LH9V0m+8/Dvdzi2647tke3+Zw5+EfGt1es+D38mz9tXJ/lMku87/Pi7q9d9
+Hv5MHtv/mOTXD//+XTloObyheu1n/U+Sf53kx5J8+gVuv6YcO+1XwG9McrH3/mjv/VKS+3NQXXmU
+KstrMzy2vfeP9t6/evjhx3Iwo83YzHmbJL+S5PeTfHnLxZ1zM8f2HUk+3Hv/QpL03h3fOTPHtid5
+VWutJXllDgJ4b9tlnj/9lCqZTzuAZ2oqVVlemxd73H4pB1dojA2PbWvtxiQ/H28+8mLNnLc/lOQ7
+W2t/1lr729baOzdb3fk2c2x/O8mPJPm7JJ9K8qu99/1tlrfTrinHNq2ipEZr7adzEMBvql7LDvnN
+JO/tve8fvJhgoZcl+fEkP5vkW5P8VWvtY733z9Uuayf8XJKPJ/mZJD+Y5E9ba3/Ze3+ydlkvTacd
+wDM1ldNVlnyTqePWWvvRJB9Mckfv/YmN1nbezRzb25Lcfxi+r03yltbaXu/9D7ZZ4rk1c2wfS/JE
+7/3pJE+31v4iyRuSCODjzRzbdyX5z/3gPy4vttY+n+T1Sf7XNkvcWdeUY6f9I+iHktzSWru5tXZD
+krfloLryKFWW12Z4bFtr35fkw0l+0auHF2V4bHvvN/fev7/3/v1J/luS/yB8p8w8J/xhkje11l7W
+WntFkp9M8tmN13kezRzbL+TgJwtprX1PDt5I4NFNV7mbrinHTvUVcO99r7X2niQfycFv6N3Xe3+4
+tXb34e2qLK/R5LH9tSSvSfI7h6/U9rpC9qHJY8s1mDm2vffPttb+JMknk+wn+WDv/Vy8c1qlyfP2
+/Uk+1Fr7VA5+Y/e9vXfvQDVwWpXMmrAAoIAmLAAoIIABoIAABoACAhgACghgACgggAGggAAGgAIC
+GAAK/F90ZWL42+bVkAAAAABJRU5ErkJggg==
+">
+</img></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To include in PyMC3 this would require a new Op and gradient to be implemented (eventually, preferably) in Theano. This may also benefit some time series methods.</p>
+<h5 id="References">References<a class="anchor-link" href="#References">¶</a></h5><ul>
+<li><a href="https://arxiv.org/abs/1503.01057">KISS-GP</a></li>
+<li><a href="http://icml2008.cs.helsinki.fi/papers/151.pdf">Cunningham et al.</a></li>
+<li><a href="http://www.math.niu.edu/~ammar/cortona/node3.html">Fast Cholesky Factorization</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Kronecker-Structure">Kronecker Structure<a class="anchor-link" href="#Kronecker-Structure">¶</a></h3><p>It may be possible to exploit Kronecker structure if the number of $X$ dimensions is greater than 1.</p>
+<p>The product of two covariance functions is also a covariance function, even if the inputs are over different spaces.  For example, in the two dimensional case, $k = k_1(x_1, x_1') k_2(x_2 , x_2')$ is a valid covariance function.  If the number of $x_1$ data points is $n_1$, and the number of $x_2$ data points is $n_2$, then the dimension of the $k$ <strong>matrix</strong> will be $n_1 n_2 \times n_1 n_2$ (large!).</p>
+<p>Fortunately, the matrix $K$ can be written in terms of a Kronecker product, $K = K_1 \otimes K_2$, and the inverse of a Kronecker product is equal to the Kronecker product of the inverses, $K^{-1} = K_1^{-1} \otimes K_2^{-1}$.</p>
+<p>For example, in a two dimensional scenario, this reduces complexity from $\mathcal{O}((n_1 n_2)^3)$ to the much faster $\mathcal{O}(n_1^3) + \mathcal{O}(n_2^3)$.</p>
+<p>The full matrix $K$ has an apparent blocked structure, as shown below.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
+<span class="n">K1</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Matern32</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)(</span><span class="n">x1</span><span class="p">))()</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">K1</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">,</span>
+              <span class="n">interpolation</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+">
+</img></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$K = K_1 \otimes K_2$ has no diagonal noise term.  If we add a diagonal noise term, $K' = K_1 \otimes K_2 + \sigma^2 I$, then the <code>eigh</code> routine can be used instead of the Cholesky to decompose individual matrices instead of the Cholesky, and the speedup is still obtained.</p>
+<p>I think an implementation in PyMC3 would be best done within the <code>GP</code> class.  Perhaps if the <code>cov_func</code> argument was given a list of covariance matrices and a list of inputs, the <code>GP</code> class would be able to sort it out.  For instance, something like</p>
+<pre><code>gp = pm.gp.GP('gp', cov_func=[k1, k2, k3], inputs=[x1, x2, x3])
+
+</code></pre>
+<p>might work.</p>
+<h5 id="References">References<a class="anchor-link" href="#References">¶</a></h5><ul>
+<li><a href="https://pdfs.semanticscholar.org/e08f/8db209278eabd13a6b9966e14d10c924b704.pdf">Saatchi Thesis</a></li>
+<li>KISS-GP</li>
+<li><a href="http://sethrf.com/files/fast-hierarchical-GPs.pdf">Fast Hierarchical GPs</a></li>
+<li><a href="https://papers.nips.cc/paper/4281-efficient-inference-in-matrix-variate-gaussian-models-with-iid-observation-noise">Efficient Infernce in Matrix-variate ...</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="The-HODLR-solver">The HODLR solver<a class="anchor-link" href="#The-HODLR-solver">¶</a></h3><p>Many common covariance functions produce hierarchical off-diagonal low-rank (HODLR) covariance matrices, pictured below.  The HODLR solver can be applied to speed up inversion and determinant computation to $\mathcal{O}(n log{}^2 n)$ time.  The algorithm can be applied in a black-box fashion, and works best on lower dimensional problems where $d < 3$.  Periodic covariances, for instance, are not HODLR.</p>
+<p>A low rank matrix is one with small eigenvalues that can be approximated as
+$$
+K \approx Q_{n \times p} D_{p \times p} Q^T_{p \times n}
+$$
+with $p < n$.</p>
+<p>The HODLR solver uses fast low rank factorizations of off diagonal blocks, and usual full rank solvers for diagonal blocks.</p>
+<p>Below shows that the <code>Matern32</code> covariance is HODLR.  The GP library George contains bindings to the HODLR solver.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([],</span> <span class="n">pm</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">Matern32</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)(</span><span class="n">x</span><span class="p">))()</span>
+<span class="n">tol</span> <span class="o">=</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">)</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">,</span>
+           <span class="n">interpolation</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">[:</span><span class="mi">50</span><span class="p">,:</span><span class="mi">50</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">,</span>
+           <span class="n">interpolation</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">K</span><span class="p">[</span><span class="mi">50</span><span class="p">:,:</span><span class="mi">50</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"inferno"</span><span class="p">,</span>
+           <span class="n">interpolation</span><span class="o">=</span><span class="s1">'none'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"K"</span><span class="p">);</span> <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"upper left block"</span><span class="p">);</span> <span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"lower left block"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Rank of K:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Rank of upper left block:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">K</span><span class="p">[:</span><span class="mi">50</span><span class="p">,:</span><span class="mi">50</span><span class="p">],</span> <span class="n">tol</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Rank of lower left block:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">K</span><span class="p">[</span><span class="mi">50</span><span class="p">:,:</span><span class="mi">50</span><span class="p">],</span> <span class="n">tol</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Rank of K: 100
+Rank of upper left block: 50
+Rank of lower left block: 2
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+/x9pzgeX4+WpeAAAAABJRU5ErkJggg==
+">
+</img></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To include in PyMC3, a HODLR solver Op would need to be added to either PyMC3 or Theano.  I'm not sure how the gradient implementation would work here, depending on the details I could see this potentially being a little tricky.</p>
+<h5 id="References">References<a class="anchor-link" href="#References">¶</a></h5><ul>
+<li><a href="https://arxiv.org/pdf/1403.6015.pdf">HODLR solver paper</a></li>
+<li><a href="https://github.com/sivaramambikasaran/HODLR">HODLR solver code</a></li>
+<li><a href="http://dan.iel.fm/george/current/">George</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Covariance-functions-with-compact-support">Covariance functions with compact support<a class="anchor-link" href="#Covariance-functions-with-compact-support">¶</a></h3><p>If the data being fit doesn't exhibit long-distance correlations, then many elements in the covariance matrix will be near zero.  If the matrix were actually sparse, then linear algebra routines could be applied for computational gains. Simply zeroing out these small values won't in general produce a matrix that is positive definite.</p>
+<p>Some kernels have compact support, and so will yield covariance matrices that are sparse when, for example, the domain of the data is large and the function being fit is high frequency or has a small lengthscale.  Including covariance function(s) with compact support should be pretty straightforward in PyMC3.</p>
+<h5 id="References:">References:<a class="anchor-link" href="#References:">¶</a></h5><ul>
+<li><a href="https://www.amazon.com/Scattered-Approximation-Monographs-Computational-Mathematics/dp/0521843359">Scattered Data Approximation, Wendland (ch 9)</a></li>
+<li><a href="http://www.math.iit.edu/~fass/603_ch4.pdf">book chapter</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Making-$n$-Smaller">Making $n$ Smaller<a class="anchor-link" href="#Making-$n$-Smaller">¶</a></h2><h3 id="Inducing-Point-Methods">Inducing Point Methods<a class="anchor-link" href="#Inducing-Point-Methods">¶</a></h3><p>The two most popular inducing point approaches are SoR (subset of regressors) and FITC (...).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="SKI-(Structured-Kernel-Interpolation)">SKI (Structured Kernel Interpolation)<a class="anchor-link" href="#SKI-(Structured-Kernel-Interpolation)">¶</a></h3><p>is described in the KISS-GP paper.  This method is a generalization of inducing point methods, such as SoR and FITC.  This method doesn't exploit matrix structure directly itself, but gridded inducing points can be used to produce approximate covariance matrices with Toeplitz and/or Kronecker structure.  The idea is to approximate the true covariance matrix with an interpolated covariance matrix.</p>
+<p>First a grid of $m$ inducing points $U$ over the domain of $X$, which has $n$ data points. The kernel matrix computed at the inducing points is denoted $K_{U,U}$.  The true covariance matrix $K_{X,X}$ can be approximated as
+$$
+K_{X,X} \approx W K_{U,U} W^T
+$$
+where $W$ is a matrix of interpolation weights.  Depending on the interpolation scheme used, $W$ can be very sparse.  For example, if $W$ represents local cubic interpolation, each row of $W$ will have 4 non-zero entries.  It isn't strictly necessary for the inducing points to be regularly spaced or on a multidimensional grid.  However, placing them on a grid enables special matrix inversion methods for Kronecker and Toeplitz structured matrices to be used.  The complexity of SKI depends on the number of inducing points used and how they are structured.</p>
+<p>The authors refer to SKI+Toeplitz+Kronecker as KISS-GP. It is implemented in the GPML version 4.0 MATLAB package.</p>
+<ul>
+<li><a href="https://arxiv.org/abs/1503.01057">KISS-GP</a></li>
+<li><a href="http://www.gaussianprocess.org/gpml/code/matlab/doc/">GPML V4.0</a></li>
+<li><a href="https://arxiv.org/abs/1511.01870">Wilson et al. 2015</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h2><p>This was a summary of GP's and how possible speedups work.  Many of them can be mixed and matched in different ways, but all have tradeoffs.  Many require the covariance matrix to have special structure, and so cannot be used in all cases.  Other speedups approximate the gaussian process model, so the solutions are inexact.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="http://bwengals.github.io/category/posts.html"><div class="fa fa-lg fa-folder-open"></div> posts</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="http://bwengals.github.io/tag/gaussian-process.html"><div class="fa fa-lg fa-tag"></div> gaussian-process</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="http://bwengals.github.io/tag/kronecker.html"><div class="fa fa-lg fa-tag"></div> kronecker</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="http://bwengals.github.io/tag/toeplitz.html"><div class="fa fa-lg fa-tag"></div> toeplitz</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="http://bwengals.github.io/tag/hodlr.html"><div class="fa fa-lg fa-tag"></div> hodlr</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="http://bwengals.github.io/tag/kiss-gp.html"><div class="fa fa-lg fa-tag"></div> kiss-gp</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="http://bwengals.github.io/tag/inducing-point.html"><div class="fa fa-lg fa-tag"></div> inducing-point</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    </section>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <p class="footer-text">&copy; <a href="http://bwengals.github.io">Bill Engels</a> powered by <a href="http://getpelican.com/">pelican</a> and <a href="http://nodotcom.org">nikhil</a></p>
+      </div>
+    </footer>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
