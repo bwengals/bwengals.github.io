@@ -1,7 +1,0 @@
-Title:  Ways to speed up gaussian processes in PyMC3, Part 1
-Slug: gp-speedups-1
-Date: 2017-05-28 20:52
-Category: posts
-Tags: gaussian-process
-Author: me
-Summary: Introduction to Gaussian Process.  The math and computational holdups.

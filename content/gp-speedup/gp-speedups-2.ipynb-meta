@@ -1,7 +1,0 @@
-Title:  Ways to speed up gaussian processes in PyMC3, Part 2
-Slug: gp-speedups-2
-Date: 2017-05-29 20:52
-Category: posts
-Tags: gaussian-process, kronecker, toeplitz, hodlr, kiss-gp, inducing-point
-Author: me
-Summary: Possible tricks to speed up GPs
