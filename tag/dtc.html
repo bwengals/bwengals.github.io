@@ -4,7 +4,7 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
-    <title>Bill Engels - hodlr</title>
+    <title>Bill Engels - DTC</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -47,17 +47,17 @@
       <ol class="breadcrumb">
         <li><a href="http://bwengals.github.io"><div class="fa fa-lg fa-home"></div><span class="hidden-xs"> Home</span></a></li>
         <li><a href="http://bwengals.github.io/tags.html"><div class="fa fa-lg fa-tags"></div> Tags <span class="badge">8</span></a></li>
-        <li class="active"><div class="fa fa-lg fa-tag"></div> hodlr <span class="badge">1</span></li>
+        <li class="active"><div class="fa fa-lg fa-tag"></div> DTC <span class="badge">1</span></li>
       </ol>
       <div class="row">
         <div class="col-sm-3">
-          <span class="text-muted">Mon 29 May 2017</span>
+          <span class="text-muted">Thu 01 June 2017</span>
         </div>
         <div class="col-sm-9">
           <p>
-            <a href="http://bwengals.github.io/gp-speedups-2.html" rel="bookmark" title="Permalink to Speeding up GPs with special kernel matrix structure (part 2)">Speeding up GPs with special kernel matrix structure (part 2)</a>
+            <a href="http://bwengals.github.io/gp-speedups-3.html" rel="bookmark" title="Permalink to Inducing point methods to speed up GPs (part 3)">Inducing point methods to speed up GPs (part 3)</a>
             <br/>
-            The goal of PyMC3 is to be able to flexibly define Bayesian models. So, we don't want to restrict users to the case where the GP prior is conjugate to the likelihood. It should be easy to use non-conjugate likelihoods. I think any tricks we might employ should be visible to the user and optional with a smart way of choosing defaults. Each could be turned on by setting a flag.
+            Another main avenue for speeding up GPs is inducing point methods. The main idea is to reduce the effective number of input data points $x$ to the GP from $n$ to $m$, with $m inducing points. Since this makes the effective covariance matrix $K$ smaller, many inducing point approaches reduce the computational complexity from $\mathcal{O}(n^3)$ to $\mathcal{O}(nm^2)$. The smaller $m$ is, the bigger the speed up.
           </p>
         </div>
       </div>
