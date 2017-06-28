@@ -47,8 +47,20 @@
       <ol class="breadcrumb">
         <li><a href="http://bwengals.github.io"><div class="fa fa-lg fa-home"></div><span class="hidden-xs"> Home</span></a></li>
         <li><a href="http://bwengals.github.io/authors.html"><div class="fa fa-lg fa-pencil"></div><div class="fa fa-pencil"></div> Authors <span class="badge">1</span></a></li>
-        <li class="active"><div class="fa fa-lg fa-pencil"></div> me <span class="badge">3</span></li>
+        <li class="active"><div class="fa fa-lg fa-pencil"></div> me <span class="badge">4</span></li>
       </ol>
+      <div class="row">
+        <div class="col-sm-3">
+          <span class="text-muted">Wed 28 June 2017</span>
+        </div>
+        <div class="col-sm-9">
+          <p>
+            <a href="http://bwengals.github.io/fitc-vfe.html" rel="bookmark" title="Permalink to FITC and VFE">FITC and VFE</a>
+            <br/>
+            Basic demo of FITC and VFE approximations in PyMC3
+          </p>
+        </div>
+      </div>
       <div class="row">
         <div class="col-sm-3">
           <span class="text-muted">Thu 01 June 2017</span>
@@ -57,7 +69,7 @@
           <p>
             <a href="http://bwengals.github.io/gp-speedups-3.html" rel="bookmark" title="Permalink to Inducing point methods to speed up GPs (part 3)">Inducing point methods to speed up GPs (part 3)</a>
             <br/>
-            Another main avenue for speeding up GPs is inducing point methods, or sparse GPs. The idea is to reduce the effective number of input data points $x$ to the GP from $n$ to $m$, with $m inducing points. Since this makes the effective covariance matrix $K$ smaller, many inducing point approaches reduce the computational complexity from $\mathcal{O}(n^3)$ to $\mathcal{O}(nm^2)$. The smaller $m$ is, the bigger the speed up.
+            Inducing point methods to speed up GPs
           </p>
         </div>
       </div>
@@ -69,7 +81,7 @@
           <p>
             <a href="http://bwengals.github.io/gp-speedups-2.html" rel="bookmark" title="Permalink to Speeding up GPs with special kernel matrix structure (part 2)">Speeding up GPs with special kernel matrix structure (part 2)</a>
             <br/>
-            The goal of PyMC3 is to be able to flexibly define Bayesian models. So, we don't want to restrict users to the case where the GP prior is conjugate to the likelihood. It should be easy to use non-conjugate likelihoods. I think any tricks we might employ should be visible to the user and optional with a smart way of choosing defaults. Each could be turned on by setting a flag.
+            Linear algebra tricks to speed up GPs
           </p>
         </div>
       </div>
@@ -81,7 +93,7 @@
           <p>
             <a href="http://bwengals.github.io/gp-speedups-1.html" rel="bookmark" title="Permalink to Gaussian processes in PyMC3 (part 1)">Gaussian processes in PyMC3 (part 1)</a>
             <br/>
-            These two posts describe gaussian process models and outline some potential strategies to speed up GPs in PyMC3. The first part is a from-the-ground-up description of Bayesian gaussian process models. Before looking for places to pick up computational speedups, it's important to look closely at the math. Most descriptions of gaussian processes (at least that I've found) focus on the conjugate case, but here I want to focus more on the general case.
+            Introduction to Gaussian Process. The math and computational holdups.
           </p>
         </div>
       </div>
