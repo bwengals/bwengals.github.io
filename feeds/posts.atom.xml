@@ -981,6 +981,7 @@ $$
 $$&lt;p&gt;is intractable.  Inference is more difficult because the GP latent variable $f$ needs to be sampled directly.  The GP class of PyMC3 can now easily handle such models, with no special syntax.&lt;/p&gt;
 &lt;p&gt;First we use a GP to generate some data that follows a zero-inflated Poisson model.
 Then we see how well we can recover the true parameters.  This is a somewhat strange scenario that the GP libraries (that I know of) wouldn't be able to handle, at least without extensions or hackery.  Another option would be Stan, but the model would be more difficult to code.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt; Since this is still under active development, to try this out you will need to checkout &lt;a href="https://github.com/pymc-devs/pymc3/pull/2322"&gt;this branch&lt;/a&gt; on the PyMC3 repository&lt;/strong&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
