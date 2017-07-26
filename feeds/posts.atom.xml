@@ -993,25 +993,24 @@ h6:hover .anchor-link {
 &lt;li&gt;Stacking GPs on other GPs, or warping the inputs of a GP with a neural net.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Thinking about how to do each of these started becoming complicated.  Any of these might take up the rest of the GSOC time, and I'm hoping to have some time after GP's to chip in on other parts of PyMC3.&lt;/p&gt;
-&lt;p&gt;I think support for additive GPs is the most important item on that list.  Many introductory GP books motivate GPs by describing how complicated data
-can be broken down into components using using sums of GPs, each with specialized and thoughtfully designed covariance functions.  Sums of GPs are GPs themselves.&lt;/p&gt;
-&lt;h2 id="Problems-(in-particular,-additive-gps)"&gt;Problems (in particular, additive gps)&lt;a class="anchor-link" href="#Problems-(in-particular,-additive-gps)"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;I wanted to make sure this was easy to do using PyMC3's GP library.  I was working on reproducing the &lt;code&gt;Keeling curve&lt;/code&gt; analysis from the Rasmussen+Williams book, and also the &lt;code&gt;birthday&lt;/code&gt; analysis in BDA3.  Doing so, I found that what I had so far was clumsy for modeling additive GPs.  From what I have now, adding covariance functions works great,&lt;/p&gt;
+&lt;p&gt;I think support for additive GPs is the most important item on that list.  Many introductions motivate GPs by describing how complex data
+can be broken down into components using using sums of GPs, each with specialized and thoughtfully designed covariance functions.&lt;/p&gt;
+&lt;h2 id="Problems-(in-particular,-additive-gps)"&gt;Problems (in particular, additive gps)&lt;a class="anchor-link" href="#Problems-(in-particular,-additive-gps)"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;I wanted to make sure this was easy to do using PyMC3's GP library.  I was working on reproducing the &lt;code&gt;Keeling curve&lt;/code&gt; analysis from the Rasmussen+Williams book, and also the &lt;code&gt;birthday&lt;/code&gt; analysis in BDA3.  Doing so, I found that what I had so far was clumsy for modeling additive GPs.  Adding covariance functions works great,&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;cov = cov1 + cov2 + cov3 + ...
 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;But there is no way to define&lt;/p&gt;
+&lt;p&gt;But there is no reliable way to define&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;gp = gp1 + gp2 + gp3 + ...
 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Overriding &lt;code&gt;__add__&lt;/code&gt; wouldn't be so bad, but the problem comes when later it would be nice
-to look at samples from &lt;code&gt;gp1&lt;/code&gt;, &lt;code&gt;gp2&lt;/code&gt; or &lt;code&gt;gp3&lt;/code&gt;.  Doing this (cleanly!) was difficult.  It would require repeating many of the argument values when defining &lt;code&gt;gp1&lt;/code&gt;, &lt;code&gt;gp2&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;Overriding &lt;code&gt;__add__&lt;/code&gt; wouldn't be so bad, but problems arise later it would be nice
+to look at samples from &lt;code&gt;gp1&lt;/code&gt;, &lt;code&gt;gp2&lt;/code&gt; or &lt;code&gt;gp3&lt;/code&gt;.  Doing this (cleanly!) was difficult.  It would've required repeating many of the argument values when defining &lt;code&gt;gp1&lt;/code&gt;, &lt;code&gt;gp2&lt;/code&gt;:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;gp1 = pm.gp.GP(name="gp1", X, cov1, mean1, sigma, "FITC", ...)
 gp2 = pm.gp.GP(name="gp2", X, cov2, mean2, sigma, "FITC", ...)
 ...
 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;But each of the three &lt;code&gt;gp&lt;/code&gt;'s don't have additive noise (parametrized by &lt;code&gt;sigma&lt;/code&gt;) -- the sum of them, after integrating out the latent gp function, is what does.  So this syntax would be misleading.  And what if a different &lt;code&gt;X&lt;/code&gt; is accidentally given?  What if one used the "FITC" approximation, and the other used "VFE", how could they add?&lt;/p&gt;
-&lt;p&gt;It would be error prone for me to &lt;code&gt;raise&lt;/code&gt; exceptions for all these cases.  This setup would be error prone for the user too. They would have to make sure they repeated every argument  exactly (and if not, that they'd need to deal with my inevitably patchy handling of errors).&lt;/p&gt;
+&lt;p&gt;But each of the three &lt;code&gt;gp&lt;/code&gt;'s don't have additive noise (parametrized by &lt;code&gt;sigma&lt;/code&gt;) -- in this case the sum of them, after integrating out the latent gp function, is what does.  So this syntax would be misleading.  And what if a different &lt;code&gt;X&lt;/code&gt; is given accidentally?  What if one used the "FITC" approximation, and the other used "VFE", how could they add?  This setup would be error prone for the user.  It would also be error prone for me to &lt;code&gt;raise&lt;/code&gt; exceptions in all these cases.&lt;/p&gt;
 &lt;p&gt;Below is an outline of the GP module before I reworked it.&lt;/p&gt;
 &lt;h2 id="Sketch-of-old-design"&gt;Sketch of old design&lt;a class="anchor-link" href="#Sketch-of-old-design"&gt;¶&lt;/a&gt;&lt;/h2&gt;
 &lt;/div&gt;
@@ -1128,7 +1127,7 @@ gp2 = pm.gp.GP(name="gp2", X, cov2, mean2, sigma, "FITC", ...)
 &lt;div class="prompt"&gt;&lt;/div&gt;
 &lt;div class="output_subarea output_text output_error"&gt;
 &lt;pre&gt;
-&lt;span class="ansi-cyan-fg"&gt;  File &lt;/span&gt;&lt;span class="ansi-green-fg"&gt;"&lt;ipython-input-19-85ad58b5b1b3&gt;"&lt;/span&gt;&lt;span class="ansi-cyan-fg"&gt;, line &lt;/span&gt;&lt;span class="ansi-green-fg"&gt;1&lt;/span&gt;
+&lt;span class="ansi-cyan-fg"&gt;  File &lt;/span&gt;&lt;span class="ansi-green-fg"&gt;"&lt;ipython-input-1-85ad58b5b1b3&gt;"&lt;/span&gt;&lt;span class="ansi-cyan-fg"&gt;, line &lt;/span&gt;&lt;span class="ansi-green-fg"&gt;1&lt;/span&gt;
 &lt;span class="ansi-red-fg"&gt;    def GP( ... ):&lt;/span&gt;
               ^
 &lt;span class="ansi-red-fg"&gt;SyntaxError&lt;/span&gt;&lt;span class="ansi-red-fg"&gt;:&lt;/span&gt; invalid syntax
@@ -1142,16 +1141,8 @@ gp2 = pm.gp.GP(name="gp2", X, cov2, mean2, sigma, "FITC", ...)
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;And it throws errors&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Post-refactor"&gt;Post refactor&lt;a class="anchor-link" href="#Post-refactor"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;I needed to change syntax a lot.  In order to make the syntax more "math-like", I used &lt;code&gt;__call__&lt;/code&gt; in an unusual way.  Hopefully there aren't issues with this that I haven't thought of.&lt;/p&gt;
-&lt;p&gt;The GP model or implementation to be used is determined by its class name.  There is no factory function like &lt;code&gt;def GP(...)&lt;/code&gt;.  When instantiated, the the &lt;code&gt;gp&lt;/code&gt; is &lt;em&gt;only&lt;/em&gt; assigned a covariance function.  There are no arguments for the type of approximation used, the mean function, or anything else.  This helps make using additive GPs straightforward.  The &lt;code&gt;gp&lt;/code&gt; objects and how they add together is specified &lt;em&gt;before&lt;/em&gt; complete information about the GP is specified.&lt;/p&gt;
+&lt;h2 id="Post-refactor"&gt;Post refactor&lt;a class="anchor-link" href="#Post-refactor"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;I ended up changing the syntax a lot.  In order to make the syntax more "math-like", I used &lt;code&gt;__call__&lt;/code&gt; in an unusual way.  Hopefully there aren't issues with this that I haven't thought of.&lt;/p&gt;
+&lt;p&gt;The GP model or implementation used is determined by its class name.  There is no factory function like &lt;code&gt;def GP(...)&lt;/code&gt;.  When instantiated, the the &lt;code&gt;gp&lt;/code&gt; is &lt;em&gt;only&lt;/em&gt; assigned a covariance function.  There are no arguments for the type of approximation used, the mean function, or anything else.  The &lt;code&gt;gp&lt;/code&gt; objects and how they add together is specified &lt;em&gt;before&lt;/em&gt; complete information about the GP is specified.  This guarantees that they will, evantually, get consistent arguments from the user.  At this point, zero mean &lt;code&gt;gp&lt;/code&gt;s with the same implementation and a given covariance function are being added.&lt;/p&gt;
 &lt;p&gt;Here is how this looks (just for illustration, this code isn't runnable):&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;X = ... # input locations for the GP
 y = ... # observed data with IID Gaussian noise
@@ -1164,34 +1155,35 @@ with pm.Model() as model:
     cov1 = pm.gp.ExpQuad(1, ℓ1)
     gp1 = pm.GPMarginal(cov_func=cov1)
 
-    cov2 = pm.gp.ExpQuad(1, ℓ2)
+    cov2 = pm.gp.Matern52(1, ℓ2)
     gp2 = pm.GPMarginal(cov_func=cov2)
 
     gp = gp1 + gp2
 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Notice that none of these objects have been given a name.  All PyMC3 random variables, and &lt;code&gt;Deterministic&lt;/code&gt;s must be assigned a name.  None of the objects that have been defined are a PyMC3 random variable yet.  The definition of the marginal likelihood comes next.&lt;/p&gt;
+&lt;p&gt;Parameters like the lengthscales $\ell$ belong to the covariance functions, not the &lt;code&gt;gp&lt;/code&gt; objects.&lt;/p&gt;
+&lt;p&gt;Notice that none of these objects have been given a name.  All PyMC3 random variables, and &lt;code&gt;Deterministic&lt;/code&gt;s must be assigned a name.  None of the objects that have been defined are a PyMC3 random variable yet.  To construct the actual random variable, first for the marginal likelihood, &lt;code&gt;__call__&lt;/code&gt; and &lt;code&gt;conditioned_on&lt;/code&gt; have to be called.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;with model:
     # define marginal likelihood
     y_ = gp(name="y", size=len(y), mean_func=mean_func).conditioned_on(X, y=y)
 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And that's it!  It would be ready for &lt;code&gt;pm.sample&lt;/code&gt;.  What happened was:&lt;/p&gt;
+&lt;p&gt;What happened was:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;The &lt;strong&gt;call&lt;/strong&gt; method for &lt;code&gt;GPMarginal&lt;/code&gt; has three arguments:&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;The &lt;strong&gt;call&lt;/strong&gt; method for &lt;code&gt;GPMarginal&lt;/code&gt; has three non-parameter and non-random variable arguments describing the &lt;code&gt;GP&lt;/code&gt; object:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;code&gt;name&lt;/code&gt;, the name of the GP random variable.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;size&lt;/code&gt;, the number of points (input or output) of the GP.  This is kind of a hack to get around some of PyMC3's issues with symbolic shapes.  This argument should be removed if that gets addressed.  I'd expect that most of the time the user will know the dimensions of the GP and be able to just hard code them here.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;mean_func&lt;/code&gt;.  The mean function is provided here.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;name&lt;/code&gt;, the name to assign to the (in this case, observed) random variable.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;size&lt;/code&gt;, the number of points (input or output) of the GP.  This is kind of a hack to get around some of PyMC3's issues with symbolic shapes.  This argument should be removed if that gets addressed.  I'd expect that most of the time the user will know the dimensions of the GP beforehand or will be able to access them from the data.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mean_func&lt;/code&gt;.  The mean function is provided here.  Having the &lt;code&gt;mean_func&lt;/code&gt; be part of the state will make it easy to sample from the &lt;code&gt;gp&lt;/code&gt; with or without including effects from the mean function.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;A reference to the object is returned, &lt;code&gt;return self&lt;/code&gt;.  All these parameters set the internal state of &lt;code&gt;gp&lt;/code&gt;.  They aren't random variables, and they don't determine what type of GP model is to be used.  Having the &lt;code&gt;mean_func&lt;/code&gt; be part of the state will make it easy to sample from the &lt;code&gt;gp&lt;/code&gt; with or without including effects from the mean function.&lt;/p&gt;
+&lt;p&gt;A reference to the object is returned, &lt;code&gt;return self&lt;/code&gt;.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Then &lt;code&gt;conditioned_on(...)&lt;/code&gt; is called.  It's arguments are strictly either variables or data, the inputs, or the observed data, or inducing points, etc.  It returns a PyMC3 random variable that can be the GP's likelihood or its predictive distribution, depending on what the &lt;code&gt;gp&lt;/code&gt; is conditioned on.&lt;/li&gt;
+&lt;li&gt;Then &lt;code&gt;conditioned_on(...)&lt;/code&gt; is called.  It's arguments are strictly either variables or data, such as the inputs, the observed data, inducing points, or the noise standard deviation.  It returns a PyMC3 random variable that can be the GP's likelihood or its predictive distribution, depending on what the &lt;code&gt;gp&lt;/code&gt; is conditioned on.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The main reason for this separation is to have a nice syntax.  But, another reason for the separation between state being set in &lt;code&gt;__call__&lt;/code&gt; and random variables being set in &lt;code&gt;conditioned_on&lt;/code&gt; is so new distributions with different random variables can be remade, without necessarily messing with the object's state.  For instance, one may wish to remove the noise variance parameter, or to use different &lt;code&gt;Xs&lt;/code&gt; input locations to predict at.&lt;/p&gt;
-&lt;p&gt;To draw samples from both &lt;code&gt;gp&lt;/code&gt;, and &lt;code&gt;gp1&lt;/code&gt; or &lt;code&gt;gp2&lt;/code&gt;, the same &lt;code&gt;gp&lt;/code&gt; object is used to construct the predictive distribution.  &lt;code&gt;conditioned_on&lt;/code&gt; is called again to construct a new PyMC3 random variable for the GP's predictive distribution.&lt;/p&gt;
+&lt;p&gt;The main reason for the separation between state being set in &lt;code&gt;__call__&lt;/code&gt; and random variables being set in &lt;code&gt;conditioned_on&lt;/code&gt; is to have a nice syntax.  Another reason is so new distributions with different random variables can be remade, without necessarily messing with the object's state.  For instance, one may wish to remove the noise variance parameter, or to use different &lt;code&gt;Xs&lt;/code&gt; input locations to predict at.&lt;/p&gt;
+&lt;p&gt;The same &lt;code&gt;gp&lt;/code&gt; object is used to construct the predictive distribution, which is used to draw samples from both &lt;code&gt;gp&lt;/code&gt;, and &lt;code&gt;gp1&lt;/code&gt; or &lt;code&gt;gp2&lt;/code&gt;.  &lt;code&gt;conditioned_on&lt;/code&gt; is called again to construct a new PyMC3 random variable for the GP's predictive distribution.&lt;/p&gt;
 $$
 p(f_* \mid y, X, X_*) \,.
 $$&lt;p&gt;The observed data $y$ at locations $X$ and the new inputs $X_*$ are all given.&lt;/p&gt;
@@ -1213,7 +1205,10 @@ with model:
 &lt;p&gt;Since &lt;code&gt;conditioned_on&lt;/code&gt; returns PyMC3 random variables, &lt;code&gt;sample_ppc&lt;/code&gt; can be used!  There is no longer a need to define a specialized interface to sample from a &lt;code&gt;gp&lt;/code&gt; object.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;# draw samples
 with model:
-    samples = pm.sample_ppc(trace, vars=[f1, f_pred], samples=100)&lt;/code&gt;&lt;/pre&gt;
+    samples = pm.sample_ppc(trace, vars=[f1, f_pred], samples=100)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For nearly all the current GP implementations, &lt;code&gt;f&lt;/code&gt; or &lt;code&gt;f_pred&lt;/code&gt; are plain instances of &lt;code&gt;MvNormal&lt;/code&gt; with particular mean and covariance matrices.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1221,8 +1216,7 @@ with model:
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Sketch-of-new-design"&gt;Sketch of new design&lt;a class="anchor-link" href="#Sketch-of-new-design"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The new design I think is simpler than the old, although it may not look like it at first glance.&lt;/p&gt;
-&lt;p&gt;Here is a sketch of how things are now&lt;/p&gt;
+&lt;h2 id="Sketch-of-new-design"&gt;Sketch of new design&lt;a class="anchor-link" href="#Sketch-of-new-design"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;I think the new design might even be simpler than the old.  Here is a sketch of how things are now&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1299,17 +1293,9 @@ with model:
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;this one runs!&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;The Theano code for constructing the mean and covariance of these random variables is confined to &lt;code&gt;_build_prior&lt;/code&gt;, and &lt;code&gt;_build_predictive&lt;/code&gt;.  This keeps the implementation readable and cleanly separated from the random variable constructors and the programming logic (which can just be placed into other methods).&lt;/p&gt;
-&lt;p&gt;I think this setup should make for a pretty efficient pattern to implement other GP models or approximations.  While I was at it, I implemented a class for a Student's T process in about 20 lines of code!&lt;/p&gt;
-&lt;h2 id="Example"&gt;Example&lt;a class="anchor-link" href="#Example"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Here is an actual runnable example.  &lt;strong&gt;This code isn't part of master yet, so to run you would need to check out the branch "gp-module"&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The Theano code for constructing the mean and covariance of these random variables is confined to &lt;code&gt;_build_prior&lt;/code&gt;, and &lt;code&gt;_build_predictive&lt;/code&gt;.  This keeps the implementation readable and cleanly separated from both the required random variable constructors, &lt;code&gt;_prior_rv&lt;/code&gt; and &lt;code&gt;_predictive_rv&lt;/code&gt;, or the programming logic, which can just be placed into other methods specific to the particular GP implementation.&lt;/p&gt;
+&lt;p&gt;I think this setup should make for a pretty efficient pattern to help implement other GP models or approximations.  While I was at it, I implemented a class for a Student's T process in about 20 lines of code!&lt;/p&gt;
+&lt;h2 id="Example"&gt;Example&lt;a class="anchor-link" href="#Example"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Here is an actual runnable example.  This implementation is of a full GP where the latent &lt;code&gt;f&lt;/code&gt; hasn't been integrated out.  &lt;strong&gt;This code isn't part of master yet, so to run you would need to check out the branch "gp-module"&lt;/strong&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
