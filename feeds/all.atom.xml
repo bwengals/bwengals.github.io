@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Bill Engels</title><link href="http://bwengals.github.io/" rel="alternate"></link><link href="http://bwengals.github.io/feeds/all.atom.xml" rel="self"></link><id>http://bwengals.github.io/</id><updated>2017-08-12T00:00:00-07:00</updated><entry><title>Using GPs in PyMC3 to model the Keeing Curve</title><link href="http://bwengals.github.io/using-gps-in-pymc3-to-model-the-keeing-curve.html" rel="alternate"></link><published>2017-08-12T00:00:00-07:00</published><updated>2017-08-12T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-08-12:/using-gps-in-pymc3-to-model-the-keeing-curve.html</id><summary type="html">&lt;p&gt;This post discusses modeling the CO2 measurments at Mauna Loa using Gaussian processes in PyMC3.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Bill Engels</title><link href="https://bwengals.github.io/" rel="alternate"></link><link href="https://bwengals.github.io/feeds/all.atom.xml" rel="self"></link><id>https://bwengals.github.io/</id><updated>2017-08-12T00:00:00-07:00</updated><entry><title>Using GPs in PyMC3 to model the Keeing Curve</title><link href="https://bwengals.github.io/using-gps-in-pymc3-to-model-the-keeing-curve.html" rel="alternate"></link><published>2017-08-12T00:00:00-07:00</published><updated>2017-08-12T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-08-12:/using-gps-in-pymc3-to-model-the-keeing-curve.html</id><summary type="html">&lt;p&gt;This post discusses modeling the CO2 measurments at Mauna Loa using Gaussian processes in PyMC3.
 &lt;!-- PELICAN_END_SUMMARY --&gt;&lt;/p&gt;
 &lt;h2&gt;The Keeling Curve&lt;/h2&gt;
 &lt;p&gt;In the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This post discusses modeling the CO2 measurments at Mauna Loa using Gaussian processes in PyMC3.
@@ -1611,7 +1611,7 @@ Never, or later than 2020: 0.25615
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="demo"></category><category term="gp"></category><category term="gsoc"></category></entry><entry><title>GP module refactor</title><link href="http://bwengals.github.io/gp-module-refactor.html" rel="alternate"></link><published>2017-07-26T00:00:00-07:00</published><updated>2017-07-26T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-07-26:/gp-module-refactor.html</id><summary type="html">&lt;p&gt;An outline of my refactor of the GP module so far.  &lt;/p&gt;
+&lt;/script&gt;</content><category term="demo"></category><category term="gp"></category><category term="gsoc"></category></entry><entry><title>GP module refactor</title><link href="https://bwengals.github.io/gp-module-refactor.html" rel="alternate"></link><published>2017-07-26T00:00:00-07:00</published><updated>2017-07-26T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-07-26:/gp-module-refactor.html</id><summary type="html">&lt;p&gt;An outline of my refactor of the GP module so far.  &lt;/p&gt;
 &lt;!-- PELICAN_END_SUMMARY --&gt;
 
 &lt;h2&gt;Sketch of the previous design&lt;/h2&gt;
@@ -2019,7 +2019,7 @@ Interrupted at 13,500 [6%]: Average Loss = 74.843
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category></entry><entry><title>GPs with non-Normal likelihoods in PyMC3</title><link href="http://bwengals.github.io/gps-with-non-normal-likelihoods-in-pymc3.html" rel="alternate"></link><published>2017-07-10T00:00:00-07:00</published><updated>2017-07-10T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-07-10:/gps-with-non-normal-likelihoods-in-pymc3.html</id><summary type="html">&lt;p&gt;Gaussian processes can be used with non-Gaussian likelihoods.  In this case, the latent variables cannot be marginalized away.  &lt;/p&gt;
+&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category></entry><entry><title>GPs with non-Normal likelihoods in PyMC3</title><link href="https://bwengals.github.io/gps-with-non-normal-likelihoods-in-pymc3.html" rel="alternate"></link><published>2017-07-10T00:00:00-07:00</published><updated>2017-07-10T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-07-10:/gps-with-non-normal-likelihoods-in-pymc3.html</id><summary type="html">&lt;p&gt;Gaussian processes can be used with non-Gaussian likelihoods.  In this case, the latent variables cannot be marginalized away.  &lt;/p&gt;
 &lt;!-- PELICAN_END_SUMMARY --&gt;
 
 &lt;p&gt;The integral …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Gaussian processes can be used with non-Gaussian likelihoods.  In this case, the latent variables cannot be marginalized away.  &lt;/p&gt;
@@ -2175,7 +2175,7 @@ Interrupted at 20,000 [10%]: Average Loss = 370.58
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category></entry><entry><title>PyMC3 FITC/VFE implementation notes</title><link href="http://bwengals.github.io/pymc3-fitcvfe-implementation-notes.html" rel="alternate"></link><published>2017-06-29T00:00:00-07:00</published><updated>2017-06-29T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-06-29:/pymc3-fitcvfe-implementation-notes.html</id><summary type="html">&lt;p&gt;This post shows in detail how FITC and VFE is implemented in PyMC3.&lt;/p&gt;
+&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category></entry><entry><title>PyMC3 FITC/VFE implementation notes</title><link href="https://bwengals.github.io/pymc3-fitcvfe-implementation-notes.html" rel="alternate"></link><published>2017-06-29T00:00:00-07:00</published><updated>2017-06-29T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-06-29:/pymc3-fitcvfe-implementation-notes.html</id><summary type="html">&lt;p&gt;This post shows in detail how FITC and VFE is implemented in PyMC3.&lt;/p&gt;
 &lt;!-- PELICAN_END_SUMMARY --&gt;
 
 &lt;p&gt;I followed &lt;a href="http://gpflow.readthedocs.io/en/latest/notebooks/SGPR_notes.html"&gt;this&lt;/a&gt; pretty closely.  It can't …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This post shows in detail how FITC and VFE is implemented in PyMC3.&lt;/p&gt;
@@ -2408,7 +2408,7 @@ $$&lt;/div&gt;
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category><category term="gp-approximations"></category></entry><entry><title>FITC and VFE</title><link href="http://bwengals.github.io/fitc-and-vfe.html" rel="alternate"></link><published>2017-06-28T00:00:00-07:00</published><updated>2017-06-28T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-06-28:/fitc-and-vfe.html</id><summary type="html">&lt;p&gt;Two general Gaussian Process approximation methods are FITC (fully independent training conditional), and VFE (variational free energy).  &lt;/p&gt;
+&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category><category term="gp-approximations"></category></entry><entry><title>FITC and VFE</title><link href="https://bwengals.github.io/fitc-and-vfe.html" rel="alternate"></link><published>2017-06-28T00:00:00-07:00</published><updated>2017-06-28T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-06-28:/fitc-and-vfe.html</id><summary type="html">&lt;p&gt;Two general Gaussian Process approximation methods are FITC (fully independent training conditional), and VFE (variational free energy).  &lt;/p&gt;
 &lt;!-- PELICAN_END_SUMMARY --&gt;
 
 &lt;p&gt;These GP approximations …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Two general Gaussian Process approximation methods are FITC (fully independent training conditional), and VFE (variational free energy).  &lt;/p&gt;
@@ -2741,7 +2741,7 @@ Interrupted at 18,100 [9%]: Average Loss = 8,307.3
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category><category term="gp-approximations"></category></entry><entry><title>Inducing point methods to speed up GPs</title><link href="http://bwengals.github.io/inducing-point-methods-to-speed-up-gps.html" rel="alternate"></link><published>2017-06-01T00:00:00-07:00</published><updated>2017-06-01T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-06-01:/inducing-point-methods-to-speed-up-gps.html</id><summary type="html">&lt;p&gt;Another main avenue for speeding up GPs is inducing point methods, or sparse GPs.&lt;/p&gt;
+&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category><category term="gp-approximations"></category></entry><entry><title>Inducing point methods to speed up GPs</title><link href="https://bwengals.github.io/inducing-point-methods-to-speed-up-gps.html" rel="alternate"></link><published>2017-06-01T00:00:00-07:00</published><updated>2017-06-01T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-06-01:/inducing-point-methods-to-speed-up-gps.html</id><summary type="html">&lt;p&gt;Another main avenue for speeding up GPs is inducing point methods, or sparse GPs.&lt;/p&gt;
 &lt;!-- PELICAN_END_SUMMARY --&gt;
 
 &lt;p&gt;The idea is to reduce the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Another main avenue for speeding up GPs is inducing point methods, or sparse GPs.&lt;/p&gt;
@@ -2881,7 +2881,7 @@ The GPML package implements most of the GP speed up methods discussed in the pas
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category><category term="gp-approximations"></category></entry><entry><title>Speeding up GPs with special kernel matrix structure</title><link href="http://bwengals.github.io/speeding-up-gps-with-special-kernel-matrix-structure.html" rel="alternate"></link><published>2017-05-29T00:00:00-07:00</published><updated>2017-05-29T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-05-29:/speeding-up-gps-with-special-kernel-matrix-structure.html</id><summary type="html">&lt;p&gt;Linear algebra tricks to speed up GPs&lt;/p&gt;
+&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category><category term="gp-approximations"></category></entry><entry><title>Speeding up GPs with special kernel matrix structure</title><link href="https://bwengals.github.io/speeding-up-gps-with-special-kernel-matrix-structure.html" rel="alternate"></link><published>2017-05-29T00:00:00-07:00</published><updated>2017-05-29T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-05-29:/speeding-up-gps-with-special-kernel-matrix-structure.html</id><summary type="html">&lt;p&gt;Linear algebra tricks to speed up GPs&lt;/p&gt;
 &lt;!-- PELICAN_END_SUMMARY --&gt;
 
 &lt;p&gt;The goal of PyMC3 is to be able to flexibly define Bayesian models …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Linear algebra tricks to speed up GPs&lt;/p&gt;
@@ -3083,7 +3083,7 @@ Rank of lower left block: 2
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category><category term="gp-approximations"></category></entry><entry><title>Gaussian processes models</title><link href="http://bwengals.github.io/gaussian-processes-models.html" rel="alternate"></link><published>2017-05-25T00:00:00-07:00</published><updated>2017-05-25T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-05-25:/gaussian-processes-models.html</id><summary type="html">&lt;p&gt;A from-the-ground-up description of Bayesian gaussian process models.  &lt;/p&gt;
+&lt;/script&gt;</content><category term="gp"></category><category term="gsoc"></category><category term="gp-approximations"></category></entry><entry><title>Gaussian processes models</title><link href="https://bwengals.github.io/gaussian-processes-models.html" rel="alternate"></link><published>2017-05-25T00:00:00-07:00</published><updated>2017-05-25T00:00:00-07:00</updated><author><name>Bill Engels</name></author><id>tag:bwengals.github.io,2017-05-25:/gaussian-processes-models.html</id><summary type="html">&lt;p&gt;A from-the-ground-up description of Bayesian gaussian process models.  &lt;/p&gt;
 &lt;!-- PELICAN_END_SUMMARY --&gt;
 
 &lt;p&gt;Before looking for places to pick up computational speedups, it's important to …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A from-the-ground-up description of Bayesian gaussian process models.  &lt;/p&gt;

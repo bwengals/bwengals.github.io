@@ -69,48 +69,50 @@ Source: http://www.sebastianraschka.com/CSS/codehilite.css
 .il { color: #666666 } /* Literal.Number.Integer.Long */
 
 
-
-/* ---------------------------------------------------------
-Tables
----------------------------------------------------------*/
-
-.body table,tr,th,td{
-    font-family: sans-serif;
-    border:1px solid black;
-    border-collapse:collapse;
-    font-size:1rem;
-    margin: 1em 0 2em 0;
-  }
-
-.body td, th{
-    text-align:center;
-    vertical-align:middle;
-    padding:2px;
-    word-break:break-all;}
-
-.body th{font-weight:bold;}
-
-/* ---------------------------------------------------------
-Images
----------------------------------------------------------*/
-
- img{
-    max-width: 100%;
-    height: auto;
-    width: 100%\9; /* ie8 */
-    display:block;}
-
-/* ---------------------------------------------------------
-Render Math
----------------------------------------------------------*/
-
-div.math{
-    font-size: 1em;
+{
+    max-width: 700px;
 }
 
-/* ---------------------------------------------------------
-Inline Code
----------------------------------------------------------*/
+.text_cell .prompt {
+    display: none;
+}
 
- p code{
-    font-size: 1em;}
+div.cell {
+    padding: 0;
+}
+
+div.text_cell_render {
+    padding: 0;
+}
+
+div.prompt {
+    font-size: 13px;
+}
+
+div.input_prompt {
+    padding: .7em 0.2em;
+}
+
+div.output_prompt {
+    padding: .4em .2em;
+}
+
+div.input_area {
+    margin: .2em 0.4em;
+    max-width: 580px;
+}
+
+table.dataframe {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+table.dataframe th, td {
+    padding: 4px;
+    text-align: left;
+}
+
+pre code {
+    background-color: inherit;
+}
