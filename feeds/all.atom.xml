@@ -3,11 +3,11 @@
 
 &lt;p&gt;This post discusses modeling the CO2 measurments at Mauna Loa using Gaussian processes in PyMC3.
 &lt;!-- PELICAN_END_SUMMARY --&gt;&lt;/p&gt;
-&lt;h2&gt;The Keeling Curve&lt;/h2&gt;
-&lt;p&gt;In the …&lt;/p&gt;</summary><content type="html">&lt;!-- PELICAN_BEGIN_SUMMARY --&gt;
+&lt;p&gt;&lt;strong&gt;The code for this is …&lt;/strong&gt;&lt;/p&gt;</summary><content type="html">&lt;!-- PELICAN_BEGIN_SUMMARY --&gt;
 
 &lt;p&gt;This post discusses modeling the CO2 measurments at Mauna Loa using Gaussian processes in PyMC3.
 &lt;!-- PELICAN_END_SUMMARY --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The code for this is being developed and isn't merged into PyMC3 master yet&lt;/strong&gt;&lt;/p&gt;
 &lt;h2&gt;The Keeling Curve&lt;/h2&gt;
 &lt;p&gt;In the late 1950's Charles Keeling invented a accurate way to measure atmospheric CO&lt;span class="math"&gt;\(_2\)&lt;/span&gt; concentration and began taking regular measurements at the Mauna Loa observatory.  Today, measurements are continuously recorded.  Check out last hours measurement result &lt;a href="https://www.co2.earth/daily-co2"&gt;here&lt;/a&gt;.  &lt;/p&gt;
 &lt;p&gt;&lt;img alt="Mauna Loa observatory" src="http://sites.gsu.edu/geog1112/files/2014/07/MaunaLoaObservatory_small-2g29jvt.png" /&gt;&lt;/p&gt;
