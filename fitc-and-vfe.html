@@ -51,7 +51,7 @@
 <!-- .entry-content -->
       <div class="article_content">
         <p>Two general Gaussian Process approximation methods are FITC (fully independent training conditional), and VFE (variational free energy).  </p>
-<!-- PELICAN_END_SUMMARY -->
+
 
 <p>These GP approximations don't form the full covariance matrix over all <span class="math">\(n\)</span> training inputs.  Instead they rely on <span class="math">\(m &lt; n\)</span> <em>inducing points</em>, which are "strategically" placed throughout the domain.  Both of these approximations reduce the <span class="math">\(\mathcal{O(n^3)}\)</span> complexity of GPs down to <span class="math">\(\mathcal{O(nm^2)}\)</span> --- a significant speed up.  The memory requirements scale down a bit too, but not as much.  They are commonly referred to as <em>sparse</em> approximations, in the sense of being data sparse.  The downside of sparse approximations is that they reduce the expressiveness of the GP.  Reducing the dimension of the covariance matrix effectively reduces the number of covariance matrix eigenvectors that can be used to fit the data.  </p>
 <h2>FITC</h2>
