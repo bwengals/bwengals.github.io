@@ -57,7 +57,8 @@
 &lt;span class="math"&gt;\(\newcommand{\KL}[2]{\mathrm{KL}\left[\, #1 \, || \, #2 \, \right]}\)&lt;/span&gt;
 &lt;span class="math"&gt;\(\newcommand{\Exp}[2]{\mathbb{E}_{#1}\left[#2\right]}\)&lt;/span&gt;
 &lt;span class="math"&gt;\(\newcommand{\Tr}[1]{\text{Tr}\left[ #1 \right]}\)&lt;/span&gt;
-&lt;span class="math"&gt;\(\newcommand{\Cov}[1]{\mathbb{C}\text{ov}\left[ #1 \right]}\)&lt;/span&gt;&lt;/p&gt;
+&lt;span class="math"&gt;\(\newcommand{\Cov}[1]{\mathbb{C}\text{ov}\left[ #1 \right]}\)&lt;/span&gt;
+&lt;span class="math"&gt;\(\DeclareMathOperator*{\argmin}{\mathbf{argmin}\,}\)&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Throughout, we consider the covariance or mean function hyperparameters
 &lt;span class="math"&gt;\(\theta\)&lt;/span&gt; to be conditioned on implicitly, unless stated otherwise.&lt;/p&gt;
 &lt;div class="math"&gt;$$
@@ -66,7 +67,7 @@ p(\fvx)           &amp;amp;= \normal{\fvx}{\bzero}{\Kxx}  \\
 p(\yv \mid \fvx)  &amp;amp;= \normal{\yv}{\fvx}{\sigma^2 \I} \\
 p(\fvx \mid \yv)  &amp;amp;= \normal{\fvx}{\Kxx [\Kxx + \sigma^2 \I]^{-1} \yv}{\Kxx - \Kxx [\Kxx + \sigma^2 \I]^{-1} \Kxx} \\
 p(\fvs \mid \yv)  &amp;amp;= \normal{\fvs}{\Ksx [\Kxx + \sigma^2 \I]^{-1} \yv}{\Kxx - \Ksx [\Kxx + \sigma^2 \I]^{-1} \Kxs} \\
-p(\fvs \mid \fvx) &amp;amp;= \normal{\fvs}{\Ksx \Kxx^{-1} \yv}{\Kxx - \Ksx \Kxx^{-1} \Kxs} \\
+p(\fvs \mid \fvx) &amp;amp;= \normal{\fvs}{\Ksx \Kxx^{-1} \fvx}{\Kxx - \Ksx \Kxx^{-1} \Kxs} \\
 \end{aligned}
 $$&lt;/div&gt;
 &lt;p&gt;The derivation starts with the equation for the GP predictive distribution,
@@ -75,7 +76,7 @@ $$&lt;/div&gt;
 &lt;/p&gt;
 &lt;div class="math"&gt;\begin{align*}
 p(\fvs \mid \yv) &amp;amp;= \int p(\fvs, \fvx \mid \yv) d\fvx \\
-                 &amp;amp;= \int p(\fvs \mid \fvx, \cancel{\yv}) p(\fvx \mid \yv) d\fvx \\
+                 &amp;amp;= \int p(\fvs \mid \fvx) p(\fvx \mid \yv) d\fvx \\
                  &amp;amp;= \int p(\fvs \mid \fvx) p(\fvx \mid \yv) d\fvx \,.
 \end{align*}&lt;/div&gt;
 &lt;p&gt;
@@ -144,8 +145,8 @@ expression on the right-hand side is the evidence lower bound (ELBO).  Then we c
 &lt;div class="math"&gt;\begin{align}
   \log p(\yv) &amp;amp;\geq \Exp{q(\fvx, \fvz)}{\log p(\fvx, \fvz, \yv)} - \Exp{q(\fvx, \fvz) }{\log q(\fvx, \fvz) } \\
               &amp;amp;\geq \Exp{q(\fvx, \fvz)}{\log  \frac{ p(\fvx, \fvz, \yv) }{ q(\fvx, \fvz) } } \\
-              &amp;amp;\geq \Exp{q(\fvx, \fvz)}{\log  \frac{ p(\yv \mid \fvx, \fvz) \cancel{p(\fvx \mid \fvz)} p(\fvz) }
-                                                   { \cancel{p(\fvx \mid \fvz)} q(\fvz) } } \\
+              &amp;amp;\geq \Exp{q(\fvx, \fvz)}{\log  \frac{ p(\yv \mid \fvx, \fvz) p(\fvz) }
+                                                   { q(\fvz) } } \\
               &amp;amp;\geq \Exp{p(\fvx \mid \fvz)q(\fvz)}{\log  \frac{ p(\yv \mid \fvx) p(\fvz) }
                                                               { q(\fvz) } } \\
               &amp;amp;\geq \Exp{p(\fvx \mid \fvz)q(\fvz)}{\log p(\yv \mid \fvx) }
